@@ -32,6 +32,7 @@
                 android:text="@string/mailaddress_inp_text" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/mailaddress_inp_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -60,42 +61,15 @@
                 android:text="@string/password_inp_1_text" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/password_inp_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/password_inp_1"
+                    android:id="@+id/password_inp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword|textWebPassword" />
-            </android.support.design.widget.TextInputLayout>
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/password_inp_2_text" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/password_inp_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
-
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
