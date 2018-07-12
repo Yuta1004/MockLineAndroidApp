@@ -19,6 +19,7 @@ class RegisterActivity : AppCompatActivity() {
 
         title = "新規登録"
 
+        // 新規登録ボタンが押された時のリスナ
         findViewById<Button>(R.id.register_button).setOnClickListener {
             val userName = findViewById<TextInputEditText>(R.id.name_inp).text.toString()
             val mailAddress = findViewById<TextInputEditText>(R.id.mailaddress_inp).text.toString()
@@ -30,6 +31,7 @@ class RegisterActivity : AppCompatActivity() {
             val passwordNo1Layout = findViewById<TextInputLayout>(R.id.password_inp_1_layout)
             val passwordNo2Layout = findViewById<TextInputLayout>(R.id.password_inp_2_layout)
 
+            // 入力された情報が正しいか判別
             var inputTrueFlag = true
             userNameLayout.isErrorEnabled = false
             if(userName == ""){
@@ -59,7 +61,8 @@ class RegisterActivity : AppCompatActivity() {
                 passwordNo2Layout.error = "パスワードが入力されていません"
                 inputTrueFlag = false
             }
-            
+
+            // 入力内容が全て正常なら新規登録処理
             if(inputTrueFlag){
                 val mAuth = FirebaseAuth.getInstance()
                 // ユーザ作成リスナ

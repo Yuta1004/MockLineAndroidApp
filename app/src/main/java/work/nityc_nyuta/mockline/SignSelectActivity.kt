@@ -13,11 +13,13 @@ class SignSelectActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_select)
 
+        // 新規登録ボタンが押された時のリスナ
         findViewById<Button>(R.id.select_register_button).setOnClickListener{
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginIntent)
         }
 
+        // ログインボタンが押された時のリスナ
         findViewById<Button>(R.id.select_login_button).setOnClickListener{
             val registerIntent = Intent(this, RegisterActivity::class.java)
             startActivity(registerIntent)
@@ -27,12 +29,14 @@ class SignSelectActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        // ログイン中であればこのActivityを終了させる
         val currentUser = firebaseAuth.currentUser
         if(currentUser != null){ // ログイン中
             finish()
         }
     }
 
+    // 戻るボタン無効化
     override fun onBackPressed() {
         return
     }

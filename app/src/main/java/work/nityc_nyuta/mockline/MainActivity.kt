@@ -18,12 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        thread{
-            val sender_id = "1048318911529"
-            val token = FirebaseInstanceId.getInstance().getToken(sender_id, "FCM")
-            Log.d("Firebase-Token", token)
-        }
-
+        // ログアウト処理
         findViewById<Button>(R.id.logout_button).setOnClickListener{
             firebaseAuth.signOut()
             Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
@@ -35,8 +30,9 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        // ログインしていない場合はログインか新規登録を選ぶ画面へ
         val currentUser = firebaseAuth.currentUser
-        if(currentUser == null){ // ログイン中でない
+        if(currentUser == null){
             val signSelectActivity = Intent(this, SignSelectActivity::class.java)
             startActivity(signSelectActivity)
         }
@@ -45,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        // ユーザ情報取得
         val currentUser = firebaseAuth.currentUser
         if(currentUser != null) {
             findViewById<TextView>(R.id.user_email).text = currentUser.email

@@ -18,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         title = "ログイン"
 
+        // ログインボタンが押された時のリスナ
         findViewById<Button>(R.id.login_button).setOnClickListener {
             val mailAddress = findViewById<TextInputEditText>(R.id.mailaddress_inp).text.toString()
             val password = findViewById<TextInputEditText>(R.id.password_inp).text.toString()
@@ -38,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
                 inputSuccessFlag = false
             }
 
-            // ログイン
+            // Firebaseを通してログイン
             if(inputSuccessFlag) {
                 mAuth.signInWithEmailAndPassword(mailAddress, password)
                         .addOnCompleteListener { task ->
