@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MockLine</string>
+    <string name="name_inp_text">ユーザ名</string>
+    <string name="mailaddress_inp_text">メールアドレス</string>
+    <string name="password_inp_1_text">パスワード</string>
+    <string name="password_inp_2_text">パスワード(再入力)</string>
+    <string name="login_button_text">ログイン</string>
+    <string name="register_button_text">新規登録</string>
 </resources>
