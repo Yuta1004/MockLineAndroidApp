@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.logout_button).setOnClickListener{
             firebaseAuth.signOut()
             Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
+            val signSelectActivity = Intent(this, SignSelectActivity::class.java)
+            startActivity(signSelectActivity)
         }
     }
 
@@ -44,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         val currentUser = firebaseAuth.currentUser
-
         if(currentUser != null) {
             findViewById<TextView>(R.id.user_email).text = currentUser.email
             findViewById<TextView>(R.id.user_uid).text = currentUser.uid
