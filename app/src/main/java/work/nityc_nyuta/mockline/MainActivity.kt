@@ -4,7 +4,9 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlin.concurrent.thread
@@ -20,6 +22,11 @@ class MainActivity : AppCompatActivity() {
             val sender_id = "1048318911529"
             val token = FirebaseInstanceId.getInstance().getToken(sender_id, "FCM")
             Log.d("Firebase-Token", token)
+        }
+
+        findViewById<Button>(R.id.logout_button).setOnClickListener{
+            firebaseAuth.signOut()
+            Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
         }
     }
 
