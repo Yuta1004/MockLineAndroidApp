@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlin.concurrent.thread
@@ -29,6 +30,21 @@ class MainActivity : AppCompatActivity() {
         if(currentUser == null){ // ログイン中でない
             val signSelectActivity = Intent(this, SignSelectActivity::class.java)
             startActivity(signSelectActivity)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val currentUser = firebaseAuth.currentUser
+
+        if(currentUser != null) {
+            findViewById<TextView>(R.id.user_email).text = currentUser.email
+            findViewById<TextView>(R.id.user_uid).text = currentUser.uid
+            currentUser.getIdToken(true)
+                    .addOnSuccessListener { task ->
+                        findViewById<TextView>(R.id.user_token).text = task.token
+                    }
         }
     }
 }

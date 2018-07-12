@@ -32,6 +32,7 @@
                 android:text="@string/name_inp_text" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/name_inp_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -56,6 +57,7 @@
                 android:text="@string/mailaddress_inp_text" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/mailaddress_inp_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -84,6 +86,7 @@
                 android:text="@string/password_inp_1_text" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/password_inp_1_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -111,6 +114,7 @@
                 android:text="@string/password_inp_2_text" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/password_inp_2_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
