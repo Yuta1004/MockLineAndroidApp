@@ -11,4 +11,12 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
         Log.d("Firebase-service", "Receive from: " + remote_message!!.from)
         Log.d("Firebase-service", "Receive data: " + remote_message.data)
     }
+
+    override fun onNewToken(token: String?) {
+        if(token != null) {
+            Log.d("Firebase-Token", token)
+        }else{
+            Log.d("Firebase-Token", "Token is null")
+        }
+    }
 }

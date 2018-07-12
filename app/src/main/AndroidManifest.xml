@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="work.nityc_nyuta.mockline">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -17,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <!--バックグラウンドで処理を行う(高度な処理)際に必要-->
+        <!--バックグラウンドで処理を行う(高度な処理)際に必要 トークン新規作成時の処理も行う-->
         <service
             android:name=".MockLineFirebaseMessagingService">
             <intent-filter>
