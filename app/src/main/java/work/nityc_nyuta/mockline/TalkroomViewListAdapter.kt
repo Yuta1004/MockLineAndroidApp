@@ -11,13 +11,7 @@ import android.widget.TextView
 
 class TalkroomViewListAdapter: BaseAdapter(){
     // トークルーム一覧を保持するlist
-    private val talkroomList: List<Talkroom>? = listOf(
-            Talkroom("1", "Nakagami"),
-            Talkroom("2", "Kishida"),
-            Talkroom("3", "Hiraki"),
-            Talkroom("4", "Moriue"),
-            Talkroom("5", "Takahashi")
-    )
+    var talkroomList: List<Talkroom>? = null
 
     private var layoutInflater: LayoutInflater? = null
 
@@ -32,18 +26,14 @@ class TalkroomViewListAdapter: BaseAdapter(){
 
     override fun getItem(position: Int): Any {
         return if(talkroomList != null) {
-            talkroomList[position]
+            talkroomList!![position]
         }else{
             0
         }
     }
 
     override fun getItemId(position: Int): Long {
-        return if(talkroomList != null){
-            talkroomList[position].id.toLong()
-        }else{
-            0
-        }
+        return position.toLong()
     }
 
     // ListViewの要素のViewを返す
@@ -52,7 +42,7 @@ class TalkroomViewListAdapter: BaseAdapter(){
         val myConvertView = this.layoutInflater!!.inflate(R.layout.talkroom_list_item, parent, false)
 
         if(talkroomList != null){
-            myConvertView.findViewById<TextView>(R.id.talkroom_name).text = talkroomList[position].name
+            myConvertView.findViewById<TextView>(R.id.talkroom_name).text = talkroomList!![position].name
         }
 
         return myConvertView
