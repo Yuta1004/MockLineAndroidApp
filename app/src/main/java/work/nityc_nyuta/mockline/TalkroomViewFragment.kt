@@ -43,7 +43,7 @@ class TalkroomViewFragment : Fragment() {
                 val talkroomsArray = retJsonObj.getJSONArray("talkrooms")
 
                 if(talkroomsArray.length() > 0) {
-                    for (idx in 0..(retJsonObj.length() - 1)) {
+                    for (idx in 0..(talkroomsArray.length() - 1)) {
                         val talkroom = JSONObject(talkroomsArray[idx].toString())
                         val talkroomId = talkroom.getString("id")
                         val talkroomName = talkroom.getString("name")
