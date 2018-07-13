@@ -73,14 +73,14 @@ class RegisterActivity : AppCompatActivity() {
 
                     // 正常に登録できたか
                     if(task.isSuccessful){
-                        Log.d("CreateNewUser", "Successfull")
+                        Log.d("CreateNewUser", "Successful")
                         Toast.makeText(this, "新規ユーザ登録が正常に完了しました", Toast.LENGTH_SHORT).show()
 
                         // サーバに通知トークンを送信
                         thread{
                             val sender_id = "1048318911529"
                             val token = FirebaseInstanceId.getInstance().getToken(sender_id, "FCM")
-                            SendUserData().sendUserData("", token, "", "")
+                            SendUserData().sendUserData(userName, token, "", "", "add_user")
                         }
 
                         finish()

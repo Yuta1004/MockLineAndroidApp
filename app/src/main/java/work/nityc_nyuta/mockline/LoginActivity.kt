@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
                                 thread {
                                     val senderId = "1048318911529"
                                     val token = FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
-                                    SendUserData().sendUserData("", token, "", "")
+                                    SendUserData().sendUserData("", token, "", "", "update_user")
                                 }
 
                                 finish()

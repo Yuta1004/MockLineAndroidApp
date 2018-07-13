@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.Moshi
 
 class SendUserData{
-    fun sendUserData(name: String?, notifyToken: String?, iconUrl: String?, headerImageUrl: String?){
+    fun sendUserData(name: String?, notifyToken: String?, iconUrl: String?, headerImageUrl: String?, path: String){
         if(FirebaseAuth.getInstance().currentUser != null) {
             val id = FirebaseAuth.getInstance().currentUser!!.email
 
@@ -17,7 +17,7 @@ class SendUserData{
 
             // http Post
             Log.d("Json", jsonData)
-            Fuel.post("https://e8d4ec4d.ngrok.io/update_user").header(header).body(jsonData).responseString()
+            Fuel.post("https://d188bca2.ngrok.io/$path").header(header).body(jsonData).responseString()
         }
     }
 

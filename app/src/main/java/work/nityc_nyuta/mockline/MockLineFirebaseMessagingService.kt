@@ -18,7 +18,7 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
 
             // サーバに通知トークンを送信
             thread{
-                SendUserData().sendUserData("", token, "", "")
+                SendUserData().sendUserData("", token, "", "", "update_user")
             }
         }
     }

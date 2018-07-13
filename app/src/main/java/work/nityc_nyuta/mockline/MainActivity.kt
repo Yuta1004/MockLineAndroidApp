@@ -51,5 +51,12 @@ class MainActivity : AppCompatActivity() {
                         findViewById<TextView>(R.id.user_token).text = task.token
                     }
         }
+
+        // サーバに最新の通知トークンを送信
+        thread{
+            val senderId = "1048318911529"
+            val token = FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
+            SendUserData().sendUserData("", token, "", "", "update_user")
+        }
     }
 }
