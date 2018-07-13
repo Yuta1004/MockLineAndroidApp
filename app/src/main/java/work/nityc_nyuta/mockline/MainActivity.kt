@@ -1,7 +1,11 @@
 package work.nityc_nyuta.mockline
 
+import android.app.AlertDialog
 import android.app.FragmentManager
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -17,6 +21,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlin.concurrent.thread
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -29,6 +34,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        // ネットワーク接続チェック
+        if (!networkConnectCheck(this.applicationContext)) {
+            Toast.makeText(this, "インターネットに接続されていません", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
         // ログインしていない場合はログインか新規登録を選ぶ画面へ
         val currentUser = firebaseAuth.currentUser
@@ -87,5 +99,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    // ネットワーク接続確認
+    private fun networkConnectCheck(context: Context): Boolean{
+        val connectManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectManager.activeNetworkInfo != null
     }
 }
