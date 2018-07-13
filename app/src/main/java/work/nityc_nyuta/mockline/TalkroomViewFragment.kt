@@ -42,12 +42,14 @@ class TalkroomViewFragment : Fragment() {
             if (retJsonObj != null) {
                 val talkroomsArray = retJsonObj.getJSONArray("talkrooms")
 
-                for (idx in 0..(retJsonObj.length() - 1)) {
-                    val talkroom = JSONObject(talkroomsArray[idx].toString())
-                    val talkroomId = talkroom.getString("id")
-                    val talkroomName = talkroom.getString("name")
+                if(talkroomsArray.length() > 0) {
+                    for (idx in 0..(retJsonObj.length() - 1)) {
+                        val talkroom = JSONObject(talkroomsArray[idx].toString())
+                        val talkroomId = talkroom.getString("id")
+                        val talkroomName = talkroom.getString("name")
 
-                    listviewSetList.add(Talkroom(talkroomId, talkroomName))
+                        listviewSetList.add(Talkroom(talkroomId, talkroomName))
+                    }
                 }
             }
 
