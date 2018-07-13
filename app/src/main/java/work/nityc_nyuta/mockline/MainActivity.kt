@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TextView
@@ -22,13 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // ログアウト処理
-//        findViewById<Button>(R.id.logout_button).setOnClickListener{
-//            firebaseAuth.signOut()
-//            Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
-//            val signSelectActivity = Intent(this, SignSelectActivity::class.java)
-//            startActivity(signSelectActivity)
-//        }
     }
 
     override fun onStart() {
@@ -68,5 +64,25 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         tabPager.adapter = SelectTabsAdapter(fragmentManager)
         findViewById<TabLayout>(R.id.select_tabs_layout).setupWithViewPager(tabPager)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        MenuInflater(this).inflate(R.menu.option_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId){
+
+            // ログアウト
+            R.id.logout -> {
+                firebaseAuth.signOut()
+                Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
+                val signSelectActivity = Intent(this, SignSelectActivity::class.java)
+                startActivity(signSelectActivity)
+            }
+        }
+
+        return true
     }
 }
