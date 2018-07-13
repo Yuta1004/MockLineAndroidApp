@@ -10,6 +10,8 @@ import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
+import kotlin.concurrent.thread
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -73,6 +75,14 @@ class RegisterActivity : AppCompatActivity() {
                     if(task.isSuccessful){
                         Log.d("CreateNewUser", "Successfull")
                         Toast.makeText(this, "新規ユーザ登録が正常に完了しました", Toast.LENGTH_SHORT).show()
+
+                        // サーバに通知トークンを送信
+                        thread{
+                            val sender_id = "1048318911529"
+                            val token = FirebaseInstanceId.getInstance().getToken(sender_id, "FCM")
+                            SendUserData().sendUserData("", token, "", "")
+                        }
+
                         finish()
                     }else{
                         Log.d("CreateNewUser", "Failed")

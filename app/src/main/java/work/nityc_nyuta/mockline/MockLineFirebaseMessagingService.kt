@@ -1,9 +1,9 @@
 package work.nityc_nyuta.mockline
 
-import android.content.Intent
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlin.concurrent.thread
 
 class MockLineFirebaseMessagingService: FirebaseMessagingService(){
 
@@ -15,8 +15,11 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
     override fun onNewToken(token: String?) {
         if(token != null) {
             Log.d("Firebase-Token", token)
-        }else{
-            Log.d("Firebase-Token", "Token is null")
+
+            // サーバに通知トークンを送信
+            thread{
+                SendUserData().sendUserData("", token, "", "")
+            }
         }
     }
 }

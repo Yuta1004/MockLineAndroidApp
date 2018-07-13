@@ -8,7 +8,8 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_login.*
+import com.google.firebase.iid.FirebaseInstanceId
+import kotlin.concurrent.thread
 
 class LoginActivity : AppCompatActivity() {
     private val mAuth = FirebaseAuth.getInstance()
@@ -45,7 +46,15 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d("UserLogin", "Success")
-                                Toast.makeText(this, "ログインに成功しました", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "ログインしました", Toast.LENGTH_SHORT).show()
+
+                                // サーバに通知トークンを送信
+                                thread {
+                                    val senderId = "1048318911529"
+                                    val token = FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
+                                    SendUserData().sendUserData("", token, "", "")
+                                }
+
                                 finish()
                             } else {
                                 Log.d("UserLogin", "Failed")
