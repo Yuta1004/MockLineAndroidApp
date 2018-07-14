@@ -33,6 +33,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // サーバに最新の通知トークンを送信
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            thread {
+                val senderId = "1048318911529"
+                val token = FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
+                SendUserData().sendUserData("", token, "", "", "update_user")
+            }
+        }
+
     }
 
     override fun onStart() {
@@ -82,13 +91,6 @@ class MainActivity : AppCompatActivity() {
 //                        findViewById<TextView>(R.id.user_token).text = task.token
 //                    }
 //        }
-
-        // サーバに最新の通知トークンを送信
-        thread{
-            val senderId = "1048318911529"
-            val token = FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
-            SendUserData().sendUserData("", token, "", "", "update_user")
-        }
 
         // タブ表示
         val tabPager = findViewById<ViewPager>(R.id.select_tabs_pager)
