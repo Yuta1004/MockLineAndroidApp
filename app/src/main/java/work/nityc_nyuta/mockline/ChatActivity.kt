@@ -13,6 +13,10 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        val senderIntent = intent
+        val talkroomId = senderIntent.getStringExtra("id")
+        title = talkroomId
+
         val chatRecycleView = findViewById<RecyclerView>(R.id.chat_recycle_view)
         chatRecycleView.setHasFixedSize(true)
         chatRecycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

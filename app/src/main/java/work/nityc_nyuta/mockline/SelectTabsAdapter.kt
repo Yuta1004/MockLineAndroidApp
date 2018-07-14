@@ -17,8 +17,16 @@ class SelectTabsAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
 
     override fun getItem(position: Int): Fragment? {
         return when(position){
-            0 -> FriendsViewFragment()
-            1 -> TalkroomViewFragment()
+            0 -> {
+                val friendFragment = FriendsViewFragment()
+                friendFragment.retainInstance = true
+                friendFragment
+            }
+            1 -> {
+                val talkroomFragment = TalkroomViewFragment()
+                talkroomFragment.retainInstance = true
+                talkroomFragment
+            }
             else -> null
         }
     }

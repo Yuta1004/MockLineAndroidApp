@@ -1,5 +1,6 @@
 package work.nityc_nyuta.mockline
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -26,7 +27,7 @@ class TalkroomViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // トークルーム一覧を表示する
-        val talkroomViewListview = layoutView!!.findViewById<ListView>(R.id.talkroom_view_listview)
+        val talkroomListview = layoutView!!.findViewById<ListView>(R.id.talkroom_view_listview)
         val talkroomListAdapter = TalkroomViewListAdapter()
         talkroomListAdapter.setInfo(LayoutInflater.from(activity))
 
@@ -56,9 +57,15 @@ class TalkroomViewFragment : Fragment() {
             // ListView反映
             handler.post {
                 talkroomListAdapter.talkroomList = listviewSetList.toList()
-                talkroomViewListview.adapter = talkroomListAdapter
+                talkroomListview.adapter = talkroomListAdapter
                 talkroomListAdapter.notifyDataSetChanged()
             }
+        }
+
+        talkroomListview.setOnItemClickListener { parent, view, position, id ->
+            val chatActivity = Intent(activity, ChatActivity::class.java)
+            chatActivity.putExtra("id", talkroomListAdapter.talkroomList!![position].id)
+            startActivity(chatActivity)
         }
     }
 }
