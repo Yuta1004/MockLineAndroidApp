@@ -13,10 +13,12 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        // トークルームID取得
         val senderIntent = intent
         val talkroomId = senderIntent.getStringExtra("id")
         title = talkroomId
 
+        // RecycleViewの設定
         val chatRecycleView = findViewById<RecyclerView>(R.id.chat_recycle_view)
         chatRecycleView.setHasFixedSize(true)
         chatRecycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -26,6 +28,7 @@ class ChatActivity : AppCompatActivity() {
         chatRecycleView.scrollToPosition(adapter.itemCount-1)
     }
 
+    // チャット履歴を生成する(デバッグ用)
     fun createChatList(): List<ChatData>{
         val chatList = mutableListOf<ChatData>()
 

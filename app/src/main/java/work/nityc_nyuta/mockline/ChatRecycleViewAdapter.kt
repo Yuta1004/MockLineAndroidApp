@@ -14,13 +14,14 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
     private val chatList = chatList_args
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        // ViewTypeによって作るViewHolderを変更
         when(viewType){
-            0 -> {
+            0 -> { // 相手からのメッセージ用ViewHolder
                 val rowView = LayoutInflater.from(parent.context).inflate(R.layout.chat_holder_opponent, parent, false)
                 return ChatViewHolderOpponent(rowView)
             }
 
-            1 ->{
+            1 ->{ // 自分のメッセージ用ViewHolder
                 val rowView = LayoutInflater.from(parent.context).inflate(R.layout.chat_holder_me, parent, false)
                 return ChatViewHolderMe(rowView)
             }
@@ -33,9 +34,11 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
 
     }
 
+    // ViewHolderに情報を埋め込む
     override fun onBindViewHolder(holder_args: RecyclerView.ViewHolder, position: Int) {
+        // ViewTypeで埋め込む情報を変える
         when(holder_args.itemViewType){
-            0 -> {
+            0 -> { // 相手からのメッセージ
                 val holder = holder_args as ChatViewHolderOpponent
                 holder.senderNameView.text = chatList[position].senderName
                 holder.bodyView.text = chatList[position].body
@@ -46,7 +49,7 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
                 holder.iconLinearLauout.layoutParams.height = 100
             }
 
-            1 ->{
+            1 ->{ // 自分のメッセージ
                 val holder = holder_args as ChatViewHolderMe
                 holder.bodyView.text = chatList[position].body
                 holder.timeView.text = chatList[position].time
@@ -64,6 +67,7 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
             meId = FirebaseAuth.getInstance().currentUser!!.email!!
         }
 
+        // ViewTypeを返す
         return if(chatList[position].senderId != meId){
             0
         }else{
@@ -73,6 +77,7 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
 
 }
 
+// 相手からのメッセージ用ViewHolder
 class ChatViewHolderOpponent(itemView: View): RecyclerView.ViewHolder(itemView){
     val senderNameView = itemView.findViewById<TextView>(R.id.sender_name)!!
     val bodyView = itemView.findViewById<TextView>(R.id.body)!!
@@ -81,9 +86,12 @@ class ChatViewHolderOpponent(itemView: View): RecyclerView.ViewHolder(itemView){
     val iconLinearLauout = itemView.findViewById<LinearLayout>(R.id.icon_linear_layout)!!
 }
 
+
+// 自分のメッセージ用ViewHolder
 class ChatViewHolderMe(itemView: View): RecyclerView.ViewHolder(itemView){
     val bodyView = itemView.findViewById<TextView>(R.id.body)!!
     val timeView = itemView.findViewById<TextView>(R.id.time)!!
 }
 
+// データクラス
 data class ChatData(val senderId: String, val senderName: String, val body: String, val time: String)
