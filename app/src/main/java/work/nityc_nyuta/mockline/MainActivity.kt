@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.util.Log
@@ -18,6 +19,8 @@ import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.httpGet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlin.concurrent.thread
@@ -41,6 +44,18 @@ class MainActivity : AppCompatActivity() {
             finish()
             return
         }
+
+        // サーバ接続チェック
+        val serverAddress = ConfigurationDataClass().serverAddress
+        thread {
+            val (request, response, result) =
+                    Fuel.get("$serverAddress/check_server").responseString()
+            val (data, error) = result
+            if(error != null){
+                Toast.makeText(this, "サーバに接続できません", Toast.LENGTH_SHORT).show()
+            }
+        }
+
 
         // ログインしていない場合はログインか新規登録を選ぶ画面へ
         val currentUser = firebaseAuth.currentUser
