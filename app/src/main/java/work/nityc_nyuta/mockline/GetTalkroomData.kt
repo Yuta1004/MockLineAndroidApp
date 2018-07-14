@@ -22,10 +22,17 @@ class GetTalkroomData{
             val (request, response, result) =
                     Fuel.post("$serverAddress/get_join_talkrooms").header(header).body(jsonData).responseJson()
 
-            Log.d("RenponseJson", String(response.data))
+            val (data, error) = result
 
-            // JsonObjectを返す
-            return JSONObject(String(response.data))
+            // 通信に成功したらJSONObjectを返す
+            return if(error == null) {
+                Log.d("RenponseJson", String(response.data))
+
+                // JsonObjectを返す
+                JSONObject(String(response.data))
+            }else{
+                null
+            }
         }
 
         return null

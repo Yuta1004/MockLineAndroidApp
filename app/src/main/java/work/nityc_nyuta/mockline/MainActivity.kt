@@ -46,13 +46,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         // サーバ接続チェック
+        val handler = Handler()
         val serverAddress = ConfigurationDataClass().serverAddress
         thread {
             val (request, response, result) =
                     Fuel.get("$serverAddress/check_server").responseString()
             val (data, error) = result
             if(error != null){
-                Toast.makeText(this, "サーバに接続できません", Toast.LENGTH_SHORT).show()
+                handler.post { Toast.makeText(this, "サーバに接続できません", Toast.LENGTH_SHORT).show() }
             }
         }
 
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val chatActivity = Intent(this, ChatActivity::class.java)
-        startActivity(chatActivity)
+//        startActivity(chatActivity)
     }
 
     override fun onResume() {
