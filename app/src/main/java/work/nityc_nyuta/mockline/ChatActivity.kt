@@ -25,14 +25,17 @@ class ChatActivity : AppCompatActivity() {
     fun createChatList(): List<ChatData>{
         val chatList = mutableListOf<ChatData>()
 
-        for(idx in 0..50){
-            chatList.add(
-                    ChatData("Yuta1004", "Hello!!\nWorld!!!!!\nHello!!\n" +
-                            "World!!!!!\nHello!!\n" +
-                            "World!!!!!\nHello!!\n" +
-                            "World!!!!!\nHello!!\n" +
-                            "World!!!!!\n" + idx.toString(), "10:04")
-            )
+        val messageDummy = ConfigurationDataClass().nopoiKashi
+        for(idx in 10..59){
+            if(idx % 2 == 0) {
+                chatList.add(
+                        ChatData("guguru0014@gmail.com", "Yuta1004", messageDummy, " 10:" + idx.toString() + " ")
+                )
+            }else{
+                chatList.add(
+                        ChatData("guguru00142@gmail.com", "Chino1204", messageDummy, " 10:" + idx.toString() + " ")
+                )
+            }
         }
 
         return chatList.toList()
