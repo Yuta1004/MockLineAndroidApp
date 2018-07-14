@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +23,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
 
         <!-- バックグラウンドで処理を行う(高度な処理)際に必要 トークン新規作成時の処理も行う -->
-        <service android:name=".MockLineFirebaseMessagingService">
+        <service android:name=".Firebase.MockLineFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -56,13 +56,13 @@
         <!-- android:name="com.google.firebase.messaging.default_notification_channel_id" -->
         <!-- android:value="@string/default_notification_channel_id"/> -->
         <activity
-            android:name=".SignSelectActivity"
+            android:name=".Activities.SignSelectActivity"
             android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activities.RegisterActivity"
             android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
         <activity
-            android:name=".ChatActivity"
+            android:name=".Activities.ChatActivity"
             android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
     </application>
 

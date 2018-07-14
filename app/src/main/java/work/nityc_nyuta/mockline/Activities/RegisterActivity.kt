@@ -1,4 +1,4 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +11,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import work.nityc_nyuta.mockline.R
+import work.nityc_nyuta.mockline.ServerConncection.SendUserData
 import kotlin.concurrent.thread
 
 class RegisterActivity : AppCompatActivity() {

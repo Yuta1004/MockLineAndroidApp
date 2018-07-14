@@ -1,13 +1,12 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Adapters
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import work.nityc_nyuta.mockline.R
 
 class TalkroomViewListAdapter: BaseAdapter(){
     // トークルーム一覧を保持するlist

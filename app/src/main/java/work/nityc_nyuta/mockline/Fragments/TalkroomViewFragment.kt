@@ -1,15 +1,19 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Fragments
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import org.json.JSONObject
+import work.nityc_nyuta.mockline.Activities.ChatActivity
+import work.nityc_nyuta.mockline.ServerConncection.GetTalkroomData
+import work.nityc_nyuta.mockline.R
+import work.nityc_nyuta.mockline.Adapters.Talkroom
+import work.nityc_nyuta.mockline.Adapters.TalkroomViewListAdapter
 import kotlin.concurrent.thread
 
 

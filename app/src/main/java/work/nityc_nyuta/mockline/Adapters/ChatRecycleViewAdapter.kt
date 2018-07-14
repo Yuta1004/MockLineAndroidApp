@@ -1,7 +1,6 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Adapters
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import work.nityc_nyuta.mockline.R
 
 class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val chatList = chatList_args

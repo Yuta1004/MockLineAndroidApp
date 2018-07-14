@@ -1,8 +1,9 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Firebase
 
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import work.nityc_nyuta.mockline.ServerConncection.SendUserData
 import kotlin.concurrent.thread
 
 class MockLineFirebaseMessagingService: FirebaseMessagingService(){

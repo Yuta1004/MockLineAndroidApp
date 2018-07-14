@@ -1,11 +1,13 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.widget.ListView
+import work.nityc_nyuta.mockline.Adapters.ChatData
+import work.nityc_nyuta.mockline.Adapters.ChatRecycleViewAdapter
+import work.nityc_nyuta.mockline.ConfigurationDataClass
+import work.nityc_nyuta.mockline.R
 
 class ChatActivity : AppCompatActivity() {
 

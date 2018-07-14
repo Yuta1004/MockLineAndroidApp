@@ -1,8 +1,10 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Adapters
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import work.nityc_nyuta.mockline.Fragments.FriendsViewFragment
+import work.nityc_nyuta.mockline.Fragments.TalkroomViewFragment
 
 class SelectTabsAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
     private val tabTitles = listOf("友だち", "トーク")

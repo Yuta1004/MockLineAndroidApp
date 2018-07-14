@@ -1,4 +1,4 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.ServerConncection
 
 import android.util.Log
 import com.github.kittinunf.fuel.Fuel
@@ -6,6 +6,7 @@ import com.github.kittinunf.fuel.android.extension.responseJson
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.Moshi
 import org.json.JSONObject
+import work.nityc_nyuta.mockline.ConfigurationDataClass
 
 class GetTalkroomData{
     fun getJoinTalkrooms(): JSONObject?{
