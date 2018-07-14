@@ -1,9 +1,6 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Activities
 
-import android.app.AlertDialog
-import android.app.FragmentManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.support.v7.app.AppCompatActivity
@@ -11,20 +8,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TextView
 import android.widget.Toast
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.httpGet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import work.nityc_nyuta.mockline.ConfigurationDataClass
+import work.nityc_nyuta.mockline.R
+import work.nityc_nyuta.mockline.Adapters.SelectTabsAdapter
+import work.nityc_nyuta.mockline.ServerConncection.SendUserData
 import kotlin.concurrent.thread
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()

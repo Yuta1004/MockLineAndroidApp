@@ -1,10 +1,11 @@
-package work.nityc_nyuta.mockline
+package work.nityc_nyuta.mockline.Activities
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
+import work.nityc_nyuta.mockline.R
 
 class SignSelectActivity : AppCompatActivity() {
     private val firebaseAuth = FirebaseAuth.getInstance()
