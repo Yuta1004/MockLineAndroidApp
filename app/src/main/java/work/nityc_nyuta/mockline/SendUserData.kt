@@ -16,8 +16,9 @@ class SendUserData{
             val header = hashMapOf("Content-Type" to "application/json")
 
             // http Post
+            val serverAddress = ConfigurationDataClass().serverAddress
             Log.d("Json", jsonData)
-            Fuel.post("https://d188bca2.ngrok.io/$path").header(header).body(jsonData).responseString()
+            Fuel.post("$serverAddress/$path").header(header).body(jsonData).responseString()
         }
     }
 

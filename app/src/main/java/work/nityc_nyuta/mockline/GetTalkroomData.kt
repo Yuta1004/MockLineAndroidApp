@@ -18,8 +18,9 @@ class GetTalkroomData{
             val header = hashMapOf("Content-Type" to "application/json")
 
             // 通信
+            val serverAddress = ConfigurationDataClass().serverAddress
             val (request, response, result) =
-                    Fuel.post("https://d188bca2.ngrok.io/get_join_talkrooms").header(header).body(jsonData).responseJson()
+                    Fuel.post("$serverAddress/get_join_talkrooms").header(header).body(jsonData).responseJson()
 
             Log.d("RenponseJson", String(response.data))
 
