@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ListView
 import org.json.JSONObject
 import work.nityc_nyuta.mockline.Activities.ChatActivity
@@ -71,5 +69,19 @@ class TalkroomViewFragment : Fragment() {
             chatActivity.putExtra("id", talkroomListAdapter.talkroomList!![position].id)
             startActivity(chatActivity)
         }
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        MenuInflater(activity!!.baseContext).inflate(R.menu.talkroom_fragment_option_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 }

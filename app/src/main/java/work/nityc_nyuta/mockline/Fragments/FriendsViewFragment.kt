@@ -2,9 +2,7 @@ package work.nityc_nyuta.mockline.Fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import work.nityc_nyuta.mockline.R
 
 class FriendsViewFragment : Fragment() {
