@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.json.JSONArray
+import org.json.JSONObject
 import work.nityc_nyuta.mockline.ConfigurationDataClass
 
 class ServerConnectUserData{
@@ -30,7 +31,7 @@ class ServerConnectUserData{
                         private val name: String?, private val notify_token: String?,
                         private val icon_url: String?, private val header_image_url: String?)
 
-    fun getUserData(): JSONArray?{
+    fun getUserData(): JSONObject?{
         // ユーザがログイン中でないならnullを返す
         if(FirebaseAuth.getInstance().currentUser == null){
             return null
@@ -49,8 +50,8 @@ class ServerConnectUserData{
         val (request, response, result) =
                 Fuel.post("$serverAddress/get_user_info").header(header).body(jsonData).response()
 
-        // JSONArrayを返す
-        return JSONArray(String(response.data))
+        // JSONObjectを返す
+        return JSONObject(String(response.data))
     }
 
     data class JsonBaseGetUserData(val id: String)
