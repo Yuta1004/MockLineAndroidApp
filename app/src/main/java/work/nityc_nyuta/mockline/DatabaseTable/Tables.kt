@@ -6,14 +6,14 @@ import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
 
 open class TalkroomTable(
-        @PrimaryKey var talkroomId: String,
-        var talkroomName: String,
-        var talkroomUserList: RealmList<String>,
-        var talkHistory: RealmList<TalkHistoryTable>
+        @PrimaryKey open var talkroomId: String = "",
+        open var talkroomName: String = "",
+        open var talkroomUserList: RealmList<String> = RealmList(),
+        open var talkHistory: RealmList<TalkHistoryTable> = RealmList()
 ): RealmObject()
 
 open class TalkHistoryTable(
-        var senderId: String,
-        var message: String,
-        var timestamp: Long
+        open var senderId: String = "",
+        open var message: String = "",
+        open var timestamp: Long = 0
 ): RealmObject()
