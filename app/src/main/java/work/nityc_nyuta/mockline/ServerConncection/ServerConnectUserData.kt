@@ -31,14 +31,9 @@ class ServerConnectUserData{
                         private val name: String?, private val notify_token: String?,
                         private val icon_url: String?, private val header_image_url: String?)
 
-    fun getUserData(): JSONObject?{
-        // ユーザがログイン中でないならnullを返す
-        if(FirebaseAuth.getInstance().currentUser == null){
-            return null
-        }
-
+    fun getUserData(userId_args: String): JSONObject{
         // ログイン中のユーザIDを取得
-        val userId = FirebaseAuth.getInstance().currentUser!!.email!!
+        val userId = userId_args
 
         // Jsonパース
         val adapter = Moshi.Builder().build().adapter(JsonBaseGetUserData::class.java)
