@@ -49,5 +49,5 @@ class ServerConnectUserData{
         return JSONObject(String(response.data))
     }
 
-    data class JsonBaseGetUserData(val id: String)
+    data class JsonBaseGetUserData(val user_id: String)
 }
