@@ -38,7 +38,7 @@ class GetTalkroomData{
 
         return null
     }
-}
 
-// データクラス
-data class JsonBase(val id: String)
+    // データクラス
+    data class JsonBase(val id: String)
+}
