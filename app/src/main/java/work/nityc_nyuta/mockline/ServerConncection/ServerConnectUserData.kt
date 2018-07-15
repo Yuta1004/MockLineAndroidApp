@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.Moshi
 import work.nityc_nyuta.mockline.ConfigurationDataClass
 
-class SendUserData{
+class ServerConnectUserData{
     fun sendUserData(name: String?, notifyToken: String?, iconUrl: String?, headerImageUrl: String?, path: String){
         if(FirebaseAuth.getInstance().currentUser != null) {
             val id = FirebaseAuth.getInstance().currentUser!!.email

@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import work.nityc_nyuta.mockline.R
-import work.nityc_nyuta.mockline.ServerConncection.SendUserData
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
 import kotlin.concurrent.thread
 
 class LoginActivity : AppCompatActivity() {
@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                                 thread {
                                     val senderId = "1048318911529"
                                     val token = FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
-                                    SendUserData().sendUserData("", token, "", "", "update_user")
+                                    ServerConnectUserData().sendUserData("", token, "", "", "update_user")
                                 }
 
                                 finish()

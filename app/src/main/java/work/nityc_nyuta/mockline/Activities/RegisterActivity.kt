@@ -12,7 +12,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import work.nityc_nyuta.mockline.R
-import work.nityc_nyuta.mockline.ServerConncection.SendUserData
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
 import kotlin.concurrent.thread
 
 class RegisterActivity : AppCompatActivity() {
@@ -82,7 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                         thread{
                             val sender_id = "1048318911529"
                             val token = FirebaseInstanceId.getInstance().getToken(sender_id, "FCM")
-                            SendUserData().sendUserData(userName, token, "", "", "add_user")
+                            ServerConnectUserData().sendUserData(userName, token, "", "", "add_user")
                         }
 
                         finish()

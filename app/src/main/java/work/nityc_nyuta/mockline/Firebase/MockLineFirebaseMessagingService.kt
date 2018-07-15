@@ -3,7 +3,7 @@ package work.nityc_nyuta.mockline.Firebase
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import work.nityc_nyuta.mockline.ServerConncection.SendUserData
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
 import kotlin.concurrent.thread
 
 class MockLineFirebaseMessagingService: FirebaseMessagingService(){
@@ -19,7 +19,7 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
 
             // サーバに通知トークンを送信
             thread{
-                SendUserData().sendUserData("", token, "", "", "update_user")
+                ServerConnectUserData().sendUserData("", token, "", "", "update_user")
             }
         }
     }

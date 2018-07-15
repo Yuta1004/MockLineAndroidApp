@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".Activities.LoginActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
 
         <!-- バックグラウンドで処理を行う(高度な処理)際に必要 トークン新規作成時の処理も行う -->
         <service android:name=".Firebase.MockLineFirebaseMessagingService">
@@ -57,13 +57,14 @@
         <!-- android:value="@string/default_notification_channel_id"/> -->
         <activity
             android:name=".Activities.SignSelectActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".Activities.RegisterActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".Activities.ChatActivity"
             android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
+        <activity android:name=".Activities.MakeTalkroomActivity"></activity>
     </application>
 
 </manifest>
