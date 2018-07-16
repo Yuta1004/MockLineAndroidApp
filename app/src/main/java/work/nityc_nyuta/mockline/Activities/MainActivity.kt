@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -89,7 +90,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        Log.d("OptionmenuSelect", "item")
         when(item!!.itemId){
+            // トークルーム作成
+            R.id.make_talkroom -> {
+                val makeTalkroomActivity = Intent(this, MakeTalkroomActivity::class.java)
+                startActivity(makeTalkroomActivity)
+            }
 
             // ログアウト
             R.id.logout -> {

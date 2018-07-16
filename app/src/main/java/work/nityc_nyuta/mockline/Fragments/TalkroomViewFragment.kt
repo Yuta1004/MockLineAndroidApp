@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.*
 import android.widget.ListView
 import org.json.JSONObject
 import work.nityc_nyuta.mockline.Activities.ChatActivity
+import work.nityc_nyuta.mockline.Activities.MakeTalkroomActivity
 import work.nityc_nyuta.mockline.ServerConncection.GetTalkroomData
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.Adapters.Talkroom
@@ -96,10 +98,7 @@ class TalkroomViewFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        MenuInflater(activity!!.baseContext).inflate(R.menu.talkroom_fragment_option_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return super.onOptionsItemSelected(item)
+        inflater!!.inflate(R.menu.talkroom_fragment_option_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

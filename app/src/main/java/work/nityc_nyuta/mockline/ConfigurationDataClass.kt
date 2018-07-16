@@ -1,7 +1,7 @@
 package work.nityc_nyuta.mockline
 
 class ConfigurationDataClass{
-    val serverAddress = "https://b2378227.ngrok.io"
+    val serverAddress = "https://7b812528.ngrok.io"
     val nopoiKashi =
             "わくわくてくてく どこへ行くの" +
             "なんとかなるさと上向いて" +
