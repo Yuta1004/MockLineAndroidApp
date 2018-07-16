@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
 import android.widget.ListView
+import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONObject
 import work.nityc_nyuta.mockline.Activities.ChatActivity
 import work.nityc_nyuta.mockline.Activities.MakeTalkroomActivity
@@ -22,6 +23,7 @@ class TalkroomViewFragment : Fragment() {
 
     // TalkroomListViewのadapterを保持しておく　<- 無駄な通信をしない
     companion object {
+        var usedUserID = ""
         var talkroomListAdapter: TalkroomViewListAdapter? = null
     }
 
@@ -35,10 +37,18 @@ class TalkroomViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val handler = Handler()
-        thread {
-            if(talkroomListAdapter == null){ setTalkroomListViewAdapter() }
-            handler.post{ setTalkroomListView() }
+        if(FirebaseAuth.getInstance().currentUser == null){ return }
+
+        // ListViewで表示しているデータのユーザIDと現在ログインしているユーザIDが異なる場合はListViewリセット
+        if(FirebaseAuth.getInstance().currentUser!!.email == usedUserID) {
+            val handler = Handler()
+            thread {
+                if (talkroomListAdapter == null) { setTalkroomListViewAdapter() }
+                handler.post { setTalkroomListView() }
+            }
+        }else{
+            resetTalkroomListView()
+            usedUserID = FirebaseAuth.getInstance().currentUser!!.email!!
         }
     }
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
 import android.widget.ListView
+import com.google.firebase.auth.FirebaseAuth
 import work.nityc_nyuta.mockline.Adapters.FriendsViewListAdapter
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectFriendsData
@@ -17,6 +18,7 @@ class FriendsViewFragment : Fragment() {
 
     // FriendListViewのAdapterを保持しておく <- 無駄な通信をしないため
     companion object {
+        var usedUserID = ""
         var friendListAdapter: FriendsViewListAdapter? = null
     }
 
@@ -29,10 +31,18 @@ class FriendsViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val handler = Handler()
-        thread {
-            if (friendListAdapter == null) { setFriendsListViewAdapter() }
-            handler.post{ setFriendsListView() }
+        if(FirebaseAuth.getInstance().currentUser == null){ return }
+
+        // ListViewで表示しているデータのユーザIDと現在ログインしているユーザIDが異なる場合はListViewリセット
+        if(FirebaseAuth.getInstance().currentUser!!.email == usedUserID) {
+            val handler = Handler()
+            thread {
+                if (friendListAdapter == null) { setFriendsListViewAdapter() }
+                handler.post { setFriendsListView() }
+            }
+        }else{
+            resetFriendsListView()
+            usedUserID = FirebaseAuth.getInstance().currentUser!!.email!!
         }
 
     }
