@@ -1,6 +1,7 @@
 package work.nityc_nyuta.mockline.Adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,13 +22,15 @@ class FriendsViewListAdapter(friendsIdList_args: List<String>, layoutInflater_ar
         var connnectionEnd = false
 
         thread {
+            // ユーザ情報をサーバから取得
+            val userInfo = ServerConnectUserData().getUserData(friendsIdList)
+
             for (userId in friendsIdList) {
                 // ユーザ情報を取得する
-                val userInfo = ServerConnectUserData().getUserData(userId)
-
-                val userName = userInfo.getString("name")
-                val iconUrl = userInfo.getString("icon_url")
-                val headerImageUrl = userInfo.getString("header_image_url")
+                val user = userInfo.getJSONObject(userId)
+                val userName = user.getString("name")
+                val iconUrl = user.getString("icon_url")
+                val headerImageUrl = user.getString("header_image_url")
                 val friendData = Friend(userId, userName, iconUrl, headerImageUrl)
 
                 // 友達リストに追加

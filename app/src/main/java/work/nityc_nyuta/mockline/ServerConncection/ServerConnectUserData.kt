@@ -31,13 +31,13 @@ class ServerConnectUserData{
                         private val name: String?, private val notify_token: String?,
                         private val icon_url: String?, private val header_image_url: String?)
 
-    fun getUserData(userId_args: String): JSONObject{
+    fun getUserData(userIds_args: List<String>): JSONObject{
         // ログイン中のユーザIDを取得
-        val userId = userId_args
+        val userIds = userIds_args
 
         // Jsonパース
         val adapter = Moshi.Builder().build().adapter(JsonBaseGetUserData::class.java)
-        val jsonData = adapter.toJson(JsonBaseGetUserData(userId))
+        val jsonData = adapter.toJson(JsonBaseGetUserData(userIds))
         val header = hashMapOf("Content-Type" to "application/json")
 
         // http post
@@ -49,5 +49,5 @@ class ServerConnectUserData{
         return JSONObject(String(response.data))
     }
 
-    data class JsonBaseGetUserData(val user_id: String)
+    data class JsonBaseGetUserData(val user_ids: List<String>)
 }
