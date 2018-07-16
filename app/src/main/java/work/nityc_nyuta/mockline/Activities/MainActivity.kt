@@ -76,17 +76,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        // ユーザ情報取得
-//        val currentUser = firebaseAuth.currentUser
-//        if(currentUser != null) {
-//            findViewById<TextView>(R.id.user_email).text = currentUser.email
-//            findViewById<TextView>(R.id.user_uid).text = currentUser.uid
-//            currentUser.getIdToken(true)
-//                    .addOnSuccessListener { task ->
-//                        findViewById<TextView>(R.id.user_token).text = task.token
-//                    }
-//        }
-
         // タブ表示
         val tabPager = findViewById<ViewPager>(R.id.select_tabs_pager)
         val fragmentManager = supportFragmentManager
