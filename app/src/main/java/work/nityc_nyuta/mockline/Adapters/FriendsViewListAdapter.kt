@@ -61,7 +61,7 @@ class FriendsViewListAdapter(friendsIdList_args: List<String>, layoutInflater_ar
 
         return myConvertView
     }
-}
 
-// データクラス
-data class Friend(val id: String, val name: String, val icon_url:String, val header_image_url: String)
+    // データクラス
+    data class Friend(val id: String, val name: String, val icon_url:String, val header_image_url: String)
+}
