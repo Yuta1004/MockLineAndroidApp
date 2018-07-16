@@ -43,7 +43,7 @@ class ServerConnectUserData{
         // http post
         val serverAddress = ConfigurationDataClass().serverAddress
         val (request, response, result) =
-                Fuel.post("$serverAddress/get_user_info").header(header).body(jsonData).response()
+                Fuel.post("$serverAddress/get_user_data").header(header).body(jsonData).response()
 
         // JSONObjectを返す
         return JSONObject(String(response.data))
