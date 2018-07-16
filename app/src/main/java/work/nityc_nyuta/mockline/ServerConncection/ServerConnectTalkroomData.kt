@@ -8,14 +8,14 @@ import com.squareup.moshi.Moshi
 import org.json.JSONObject
 import work.nityc_nyuta.mockline.ConfigurationDataClass
 
-class GetTalkroomData{
+class ServerConnectTalkroomData{
     fun getJoinTalkrooms(): JSONObject?{
         if(FirebaseAuth.getInstance().currentUser != null){
             val id = FirebaseAuth.getInstance().currentUser!!.email!!
 
             // Json生成
-            val adapter =  Moshi.Builder().build().adapter(JsonBase::class.java)
-            val jsonData = adapter.toJson(JsonBase(id))
+            val adapter =  Moshi.Builder().build().adapter(JsonBaseGetJoinTalkrooms::class.java)
+            val jsonData = adapter.toJson(JsonBaseGetJoinTalkrooms(id))
             val header = hashMapOf("Content-Type" to "application/json")
 
             // 通信
@@ -40,5 +40,20 @@ class GetTalkroomData{
     }
 
     // データクラス
-    data class JsonBase(val id: String)
+    data class JsonBaseGetJoinTalkrooms(val id: String)
+
+    fun sendMakeTalkroom(user_list: String, talkroom_name: String){
+        //　Json生成
+        val adapter = Moshi.Builder().build().adapter(JsonBaseSendMakeTalkroom::class.java)
+        val jsonData = adapter.toJson(JsonBaseSendMakeTalkroom(user_list, talkroom_name))
+        val header = hashMapOf("Content-Type" to "application/json")
+
+        // http post
+        val serverAddress = ConfigurationDataClass().serverAddress
+        val (request, response, result) =
+                Fuel.post("$serverAddress/make_talkroom").header(header).body(jsonData).response()
+    }
+
+    // データクラス
+    data class JsonBaseSendMakeTalkroom(val user_list: String, val talkroom_name: String)
 }
