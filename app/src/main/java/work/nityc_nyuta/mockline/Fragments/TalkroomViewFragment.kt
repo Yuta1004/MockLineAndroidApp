@@ -18,6 +18,11 @@ import kotlin.concurrent.thread
 class TalkroomViewFragment : Fragment() {
     private var layoutView: View? = null
 
+    // TalkroomListViewのadapterを保持しておく　<- 無駄な通信をしない
+    companion object {
+        var talkroomListAdapter: TalkroomViewListAdapter? = null
+    }
+
     // FragmentのViewが生成されるときに呼ばれる
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layoutView = inflater.inflate(R.layout.fragment_talkroom_view, container, false)
@@ -30,43 +35,49 @@ class TalkroomViewFragment : Fragment() {
 
         // トークルーム一覧を表示する
         val talkroomListview = layoutView!!.findViewById<ListView>(R.id.talkroom_view_listview)
-        val talkroomListAdapter = TalkroomViewListAdapter()
-        talkroomListAdapter.setInfo(LayoutInflater.from(activity))
 
-        // スレッド内からUIを弄るためにハンドラを作成
-        val handler = Handler()
+        // adapterがnullならサーバと通信を行う
+        if(talkroomListAdapter == null) {
+            val handler = Handler()
 
-        // 通信を行うため，スレッドを建てる
-        thread{
-            val retJsonObj = GetTalkroomData().getJoinTalkrooms()
-            val listviewSetList = mutableListOf<Talkroom>()
+            // 通信を行うため，スレッドを建てる
+            thread {
+                val retJsonObj = GetTalkroomData().getJoinTalkrooms()
+                val listviewSetList = mutableListOf<Talkroom>()
 
-            // 通信結果がnullでないなら
-            if (retJsonObj != null) {
-                val talkroomsArray = retJsonObj.getJSONArray("talkrooms")
+                // 通信結果がnullでないなら
+                if (retJsonObj != null) {
+                    val talkroomsArray = retJsonObj.getJSONArray("talkrooms")
 
-                if(talkroomsArray.length() > 0) {
-                    for (idx in 0..(talkroomsArray.length() - 1)) {
-                        val talkroom = JSONObject(talkroomsArray[idx].toString())
-                        val talkroomId = talkroom.getString("id")
-                        val talkroomName = talkroom.getString("name")
+                    if (talkroomsArray.length() > 0) {
+                        for (idx in 0..(talkroomsArray.length() - 1)) {
+                            val talkroom = JSONObject(talkroomsArray[idx].toString())
+                            val talkroomId = talkroom.getString("id")
+                            val talkroomName = talkroom.getString("name")
 
-                        listviewSetList.add(Talkroom(talkroomId, talkroomName))
+                            listviewSetList.add(Talkroom(talkroomId, talkroomName))
+                        }
                     }
                 }
-            }
 
-            // ListView反映
-            handler.post {
-                talkroomListAdapter.talkroomList = listviewSetList.toList()
-                talkroomListview.adapter = talkroomListAdapter
-                talkroomListAdapter.notifyDataSetChanged()
+                // ListView反映
+                handler.post {
+                    talkroomListAdapter = TalkroomViewListAdapter()
+                    talkroomListAdapter!!.setInfo(LayoutInflater.from(activity))
+                    talkroomListAdapter!!.talkroomList = listviewSetList.toList()
+                    talkroomListview.adapter = talkroomListAdapter
+                    talkroomListAdapter!!.notifyDataSetChanged()
+                }
             }
+        }else{
+            talkroomListview.adapter = talkroomListAdapter
+            talkroomListAdapter!!.notifyDataSetChanged()
         }
 
+        // トークルームが選択されたら
         talkroomListview.setOnItemClickListener { parent, view, position, id ->
             val chatActivity = Intent(activity, ChatActivity::class.java)
-            chatActivity.putExtra("id", talkroomListAdapter.talkroomList!![position].id)
+            chatActivity.putExtra("id", talkroomListAdapter!!.talkroomList!![position].id)
             startActivity(chatActivity)
         }
     }

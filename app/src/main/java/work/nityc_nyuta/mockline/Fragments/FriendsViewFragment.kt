@@ -15,6 +15,11 @@ class FriendsViewFragment : Fragment() {
     // LayoutViewを保持する
     private var layoutView: View? = null
 
+    // FriendListViewのAdapterを保持しておく <- 無駄な通信をしないため
+    companion object {
+        var friendListAdapter: FriendsViewListAdapter? = null
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         layoutView = inflater.inflate(R.layout.fragment_friends_view, container, false)
 
@@ -27,19 +32,26 @@ class FriendsViewFragment : Fragment() {
         // スレッド内でUIを弄るためにHandlerを生成する
         val handler = Handler()
 
-        thread{
-            val friendIdList = ServerConnectFriendsData().getFriendsList()
+        // adapterがnullならサーバに接続して友達リストを取得
+        if(friendListAdapter == null) {
+            thread {
+                val friendIdList = ServerConnectFriendsData().getFriendsList()
 
-            // 友達情報が取得できたら
-            if(friendIdList != null) {
-                val adapter = FriendsViewListAdapter(friendIdList, activity!!.layoutInflater)
+                // 友達情報が取得できたら
+                if (friendIdList != null) {
+                    val adapter = FriendsViewListAdapter(friendIdList, activity!!.layoutInflater)
+                    friendListAdapter = adapter
 
-                // ListViewに値をセット
-                handler.post {
-                    friendListView.adapter = adapter
-                    adapter.notifyDataSetChanged()
+                    // ListViewに値をセット
+                    handler.post {
+                        friendListView.adapter = adapter
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
+        }else{
+            friendListView.adapter = friendListAdapter
+            friendListAdapter!!.notifyDataSetChanged()
         }
     }
 }
