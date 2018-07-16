@@ -35,53 +35,54 @@ class TalkroomViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setTalkroomListView()
+        val handler = Handler()
+        thread {
+            if(talkroomListAdapter == null){ setTalkroomListViewAdapter() }
+            handler.post{ setTalkroomListView() }
+        }
     }
 
+    // ListViewリセット
     fun resetTalkroomListView(){
         talkroomListAdapter = null
-        setTalkroomListView()
+        val handler = Handler()
+        thread {
+            setTalkroomListViewAdapter()
+            handler.post { setTalkroomListView() }
+        }
     }
 
+    // Adapterセット
+    private fun setTalkroomListViewAdapter(){
+        val retJsonObj = GetTalkroomData().getJoinTalkrooms()
+        val listviewSetList = mutableListOf<Talkroom>()
+
+        // 通信結果がnullでないなら
+        if (retJsonObj != null) {
+            val talkroomsArray = retJsonObj.getJSONArray("talkrooms")
+
+            if (talkroomsArray.length() > 0) {
+                for (idx in 0..(talkroomsArray.length() - 1)) {
+                    val talkroom = JSONObject(talkroomsArray[idx].toString())
+                    val talkroomId = talkroom.getString("id")
+                    val talkroomName = talkroom.getString("name")
+
+                    listviewSetList.add(Talkroom(talkroomId, talkroomName))
+                }
+            }
+        }
+
+        talkroomListAdapter = TalkroomViewListAdapter(listviewSetList.toList(), activity!!.layoutInflater)
+    }
+
+    // ListViewセット
     private fun setTalkroomListView(){
         // トークルーム一覧を表示する
         val talkroomListview = layoutView!!.findViewById<ListView>(R.id.talkroom_view_listview)
 
-        // adapterがnullならサーバと通信を行う
-        if(talkroomListAdapter == null) {
-            val handler = Handler()
-
-            // 通信を行うため，スレッドを建てる
-            thread {
-                val retJsonObj = GetTalkroomData().getJoinTalkrooms()
-                val listviewSetList = mutableListOf<Talkroom>()
-
-                // 通信結果がnullでないなら
-                if (retJsonObj != null) {
-                    val talkroomsArray = retJsonObj.getJSONArray("talkrooms")
-
-                    if (talkroomsArray.length() > 0) {
-                        for (idx in 0..(talkroomsArray.length() - 1)) {
-                            val talkroom = JSONObject(talkroomsArray[idx].toString())
-                            val talkroomId = talkroom.getString("id")
-                            val talkroomName = talkroom.getString("name")
-
-                            listviewSetList.add(Talkroom(talkroomId, talkroomName))
-                        }
-                    }
-                }
-
-                // ListView反映
-                handler.post {
-                    talkroomListAdapter = TalkroomViewListAdapter(listviewSetList.toList(), LayoutInflater.from(activity))
-                    talkroomListview.adapter = talkroomListAdapter
-                    talkroomListAdapter!!.notifyDataSetChanged()
-                }
-            }
-        }else{
-            talkroomListview.adapter = talkroomListAdapter
-            talkroomListAdapter!!.notifyDataSetChanged()
-        }
+        // ListView反映
+        talkroomListview.adapter = talkroomListAdapter
+        talkroomListAdapter!!.notifyDataSetChanged()
 
         // トークルームが選択されたら
         talkroomListview.setOnItemClickListener { parent, view, position, id ->

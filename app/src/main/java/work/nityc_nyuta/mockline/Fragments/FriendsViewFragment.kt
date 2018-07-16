@@ -29,40 +29,38 @@ class FriendsViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFriendsListView()
+        val handler = Handler()
+        thread {
+            if (friendListAdapter == null) { setFriendsListViewAdapter() }
+            handler.post{ setFriendsListView() }
+        }
+
     }
 
+    // ListViewリセット
     fun resetFriendsListView(){
         friendListAdapter = null
-        setFriendsListView()
+        val handler = Handler()
+        thread {
+            setFriendsListViewAdapter()
+            handler.post{ setFriendsListView() }
+        }
     }
 
+    private fun setFriendsListViewAdapter(){
+        val friendIdList = ServerConnectFriendsData().getFriendsList()
+
+        // 友達情報が取得できたら
+        if (friendIdList != null) {
+            val adapter = FriendsViewListAdapter(friendIdList, activity!!.layoutInflater)
+            friendListAdapter = adapter
+        }
+    }
+
+    // ListViewにAdapterをセット
     private fun setFriendsListView(){
         val friendListView = layoutView!!.findViewById<ListView>(R.id.friends_list_view)
-
-        // adapterがnullならサーバに接続して友達リストを取得
-        if(friendListAdapter == null) {
-            val handler = Handler()
-
-            // サーバと通信をするためTheradを建てる
-            thread {
-                val friendIdList = ServerConnectFriendsData().getFriendsList()
-
-                // 友達情報が取得できたら
-                if (friendIdList != null) {
-                    val adapter = FriendsViewListAdapter(friendIdList, activity!!.layoutInflater)
-                    friendListAdapter = adapter
-
-                    // ListViewに値をセット
-                    handler.post {
-                        friendListView.adapter = adapter
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-            }
-        }else{
-            friendListView.adapter = friendListAdapter
-            friendListAdapter!!.notifyDataSetChanged()
-        }
+        friendListView.adapter = friendListAdapter
+        friendListAdapter!!.notifyDataSetChanged()
     }
 }
