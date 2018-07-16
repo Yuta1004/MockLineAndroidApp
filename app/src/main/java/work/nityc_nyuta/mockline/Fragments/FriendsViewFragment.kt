@@ -27,13 +27,24 @@ class FriendsViewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val friendListView = layoutView!!.findViewById<ListView>(R.id.friends_list_view)
+        super.onViewCreated(view, savedInstanceState)
 
-        // スレッド内でUIを弄るためにHandlerを生成する
-        val handler = Handler()
+        setFriendsListView()
+    }
+
+    fun resetFriendsListView(){
+        friendListAdapter = null
+        setFriendsListView()
+    }
+
+    private fun setFriendsListView(){
+        val friendListView = layoutView!!.findViewById<ListView>(R.id.friends_list_view)
 
         // adapterがnullならサーバに接続して友達リストを取得
         if(friendListAdapter == null) {
+            val handler = Handler()
+
+            // サーバと通信をするためTheradを建てる
             thread {
                 val friendIdList = ServerConnectFriendsData().getFriendsList()
 

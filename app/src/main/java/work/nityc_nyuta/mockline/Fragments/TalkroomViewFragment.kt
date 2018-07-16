@@ -33,6 +33,15 @@ class TalkroomViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setTalkroomListView()
+    }
+
+    fun resetTalkroomListView(){
+        talkroomListAdapter = null
+        setTalkroomListView()
+    }
+
+    private fun setTalkroomListView(){
         // トークルーム一覧を表示する
         val talkroomListview = layoutView!!.findViewById<ListView>(R.id.talkroom_view_listview)
 
