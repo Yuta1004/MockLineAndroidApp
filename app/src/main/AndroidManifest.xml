@@ -64,7 +64,9 @@
         <activity
             android:name=".Activities.ChatActivity"
             android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
-        <activity android:name=".Activities.MakeTalkroomActivity" />
+        <activity
+            android:name=".Activities.MakeTalkroomActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
     </application>
 
 </manifest>
