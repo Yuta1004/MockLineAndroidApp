@@ -62,9 +62,7 @@ class TalkroomViewFragment : Fragment() {
 
                 // ListView反映
                 handler.post {
-                    talkroomListAdapter = TalkroomViewListAdapter()
-                    talkroomListAdapter!!.setInfo(LayoutInflater.from(activity))
-                    talkroomListAdapter!!.talkroomList = listviewSetList.toList()
+                    talkroomListAdapter = TalkroomViewListAdapter(listviewSetList.toList(), LayoutInflater.from(activity))
                     talkroomListview.adapter = talkroomListAdapter
                     talkroomListAdapter!!.notifyDataSetChanged()
                 }
@@ -77,7 +75,7 @@ class TalkroomViewFragment : Fragment() {
         // トークルームが選択されたら
         talkroomListview.setOnItemClickListener { parent, view, position, id ->
             val chatActivity = Intent(activity, ChatActivity::class.java)
-            chatActivity.putExtra("id", talkroomListAdapter!!.talkroomList!![position].id)
+            chatActivity.putExtra("id", talkroomListAdapter!!.talkroomList[position].id)
             startActivity(chatActivity)
         }
     }

@@ -8,27 +8,18 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import work.nityc_nyuta.mockline.R
 
-class TalkroomViewListAdapter: BaseAdapter(){
+class TalkroomViewListAdapter(talkroomList_args: List<Talkroom>, layoutInflater_args: LayoutInflater): BaseAdapter(){
     // トークルーム一覧を保持するlist
-    var talkroomList: List<Talkroom>? = null
+    val talkroomList = talkroomList_args
 
-    private var layoutInflater: LayoutInflater? = null
-
-    // LayoutInflaterをセットする
-    fun setInfo(layoutInflater: LayoutInflater){
-        this.layoutInflater = layoutInflater
-    }
+    private val layoutInflater = layoutInflater_args
 
     override fun getCount(): Int {
-        return talkroomList?.size ?: 0
+        return talkroomList.size
     }
 
     override fun getItem(position: Int): Any {
-        return if(talkroomList != null) {
-            talkroomList!![position]
-        }else{
-            0
-        }
+        return talkroomList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -38,11 +29,9 @@ class TalkroomViewListAdapter: BaseAdapter(){
     // ListViewの要素のViewを返す
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val myConvertView = this.layoutInflater!!.inflate(R.layout.talkroom_list_item, parent, false)
+        val myConvertView = this.layoutInflater.inflate(R.layout.talkroom_list_item, parent, false)
 
-        if(talkroomList != null){
-            myConvertView.findViewById<TextView>(R.id.talkroom_name).text = talkroomList!![position].name
-        }
+        myConvertView.findViewById<TextView>(R.id.talkroom_name).text = talkroomList[position].name
 
         return myConvertView
     }
