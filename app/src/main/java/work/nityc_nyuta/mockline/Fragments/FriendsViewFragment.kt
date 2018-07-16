@@ -35,34 +35,33 @@ class FriendsViewFragment : Fragment() {
 
         // ListViewで表示しているデータのユーザIDと現在ログインしているユーザIDが異なる場合はListViewリセット
         if(FirebaseAuth.getInstance().currentUser!!.email == usedUserID) {
-            val handler = Handler()
-            thread {
-                if (friendListAdapter == null) { setFriendsListViewAdapter() }
-                handler.post { setFriendsListView() }
-            }
+            if (friendListAdapter == null) { setFriendsListViewAdapter() }
+            setFriendsListView()
         }else{
-            resetFriendsListView()
-            usedUserID = FirebaseAuth.getInstance().currentUser!!.email!!
-        }
-
-    }
-
-    // ListViewリセット
-    fun resetFriendsListView(){
-        friendListAdapter = null
-        val handler = Handler()
-        thread {
+            friendListAdapter = null
             setFriendsListViewAdapter()
-            handler.post{ setFriendsListView() }
+            setFriendsListView()
+            usedUserID = FirebaseAuth.getInstance().currentUser!!.email!!
         }
     }
 
     private fun setFriendsListViewAdapter(){
-        val friendIdList = ServerConnectFriendsData().getFriendsList()
+        // スレッド終了監視フラグ
+        var connectEnd = false
+        var friendIdList: List<String> ? = null
+
+        // スレッド
+        thread {
+            friendIdList = ServerConnectFriendsData().getFriendsList()
+            connectEnd = true
+        }
+
+        // スレッド終了まで待機
+        while(!connectEnd){}
 
         // 友達情報が取得できたら
         if (friendIdList != null) {
-            val adapter = FriendsViewListAdapter(friendIdList, activity!!.layoutInflater)
+            val adapter = FriendsViewListAdapter(friendIdList!!, activity!!.layoutInflater)
             friendListAdapter = adapter
         }
     }
