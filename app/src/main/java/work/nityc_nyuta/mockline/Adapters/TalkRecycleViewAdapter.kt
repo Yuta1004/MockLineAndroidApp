@@ -40,9 +40,11 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView
         when(holder_args.itemViewType){
             0 -> { // 相手からのメッセージ
                 val holder = holder_args as ChatViewHolderOpponent
-                holder.senderNameView.text = talkList[position].senderName
+                //holder.senderNameView.text = talkList[position].senderName
+                holder.senderNameView.text = ""
                 holder.bodyView.text = talkList[position].body
                 holder.timeView.text = talkList[position].time
+
                 holder.iconView.layoutParams.width = 100
                 holder.iconView.layoutParams.height = 100
                 holder.iconLinearLauout.layoutParams.width = 20
@@ -75,8 +77,8 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView
         }
     }
     
-    fun addTalkList(senderId: String, senderName: String, message: String, time: String){
-        talkList.add(ChatData(senderId, senderName, message, time))
+    fun addTalkList(senderId: String, message: String, time: Long){
+        talkList.add(ChatData(senderId, message, time.toString()))
     }
 
     // 相手からのメッセージ用ViewHolder
@@ -97,4 +99,4 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView
 }
 
 // データクラス
-data class ChatData(val senderId: String, val senderName: String, val body: String, val time: String)
+data class ChatData(val senderId: String, val body: String, val time: String)

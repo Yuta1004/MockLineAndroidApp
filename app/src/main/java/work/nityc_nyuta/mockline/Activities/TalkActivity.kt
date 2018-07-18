@@ -39,7 +39,7 @@ class TalkActivity : AppCompatActivity() {
             databaseHelper.close()
 
             // adapterとRecyecleViewを更新
-            adapter.addTalkList("guguru0014@gmail.com", "Yuta1004", "テスト送信です", "0")
+            adapter.addTalkList("guguru0014@gmail.com", "テスト送信です", 0)
             adapter.notifyDataSetChanged()
             chatRecycleView.smoothScrollToPosition(adapter.itemCount-1)
         }
@@ -60,7 +60,7 @@ class TalkActivity : AppCompatActivity() {
         val talkHistory = databaseHelper.getTalkHistory(talkroomId)
         if(talkHistory != null){
             for(talkData in talkHistory){
-                talkList.add(ChatData(talkData.senderId, "TestUser", talkData.message, talkData.timestamp.toString()))
+                talkList.add(ChatData(talkData.senderId, talkData.message, talkData.timestamp.toString()))
             }
         }
 
