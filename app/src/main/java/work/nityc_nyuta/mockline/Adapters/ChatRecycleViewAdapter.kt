@@ -10,8 +10,8 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import work.nityc_nyuta.mockline.R
 
-class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val chatList = chatList_args
+class ChatRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val talkList = talkList_args
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // ViewTypeによって作るViewHolderを変更
@@ -40,9 +40,9 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
         when(holder_args.itemViewType){
             0 -> { // 相手からのメッセージ
                 val holder = holder_args as ChatViewHolderOpponent
-                holder.senderNameView.text = chatList[position].senderName
-                holder.bodyView.text = chatList[position].body
-                holder.timeView.text = chatList[position].time
+                holder.senderNameView.text = talkList[position].senderName
+                holder.bodyView.text = talkList[position].body
+                holder.timeView.text = talkList[position].time
                 holder.iconView.layoutParams.width = 100
                 holder.iconView.layoutParams.height = 100
                 holder.iconLinearLauout.layoutParams.width = 20
@@ -51,14 +51,14 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
 
             1 ->{ // 自分のメッセージ
                 val holder = holder_args as ChatViewHolderMe
-                holder.bodyView.text = chatList[position].body
-                holder.timeView.text = chatList[position].time
+                holder.bodyView.text = talkList[position].body
+                holder.timeView.text = talkList[position].time
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return chatList.size
+        return talkList.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -68,11 +68,15 @@ class ChatRecycleViewAdapter(chatList_args: List<ChatData>): RecyclerView.Adapte
         }
 
         // ViewTypeを返す
-        return if(chatList[position].senderId != meId){
+        return if(talkList[position].senderId != meId){
             0
         }else{
             1
         }
+    }
+    
+    fun addTalkList(senderId: String, senderName: String, message: String, time: String){
+        talkList.add(ChatData(senderId, senderName, message, time))
     }
 
 }

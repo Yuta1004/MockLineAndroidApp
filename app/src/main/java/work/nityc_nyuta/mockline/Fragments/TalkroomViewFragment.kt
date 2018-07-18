@@ -102,6 +102,7 @@ class TalkroomViewFragment : Fragment() {
         talkroomListview.setOnItemClickListener { parent, view, position, id ->
             val chatActivity = Intent(activity, ChatActivity::class.java)
             chatActivity.putExtra("id", talkroomListAdapter!!.talkroomList[position].id)
+            chatActivity.putExtra("name", talkroomListAdapter!!.talkroomList[position].name)
             startActivity(chatActivity)
         }
     }
