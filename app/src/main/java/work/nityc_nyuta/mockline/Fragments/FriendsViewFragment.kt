@@ -70,6 +70,8 @@ class FriendsViewFragment : Fragment() {
     private fun setFriendsListView(){
         val friendListView = layoutView!!.findViewById<ListView>(R.id.friends_list_view)
         friendListView.adapter = friendListAdapter
-        friendListAdapter!!.notifyDataSetChanged()
+        if(friendListAdapter != null) {
+            friendListAdapter!!.notifyDataSetChanged()
+        }
     }
 }
