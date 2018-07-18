@@ -2,6 +2,8 @@ package work.nityc_nyuta.mockline.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -9,6 +11,7 @@ import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_talk.*
 import kotlinx.android.synthetic.main.talk_holder_me.*
@@ -16,6 +19,10 @@ import work.nityc_nyuta.mockline.Adapters.TalkData
 import work.nityc_nyuta.mockline.Adapters.TalkRecycleViewAdapter
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
 import work.nityc_nyuta.mockline.R
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectTalkData
+import javax.net.ServerSocketFactory
+import javax.net.ssl.HandshakeCompletedListener
+import kotlin.concurrent.thread
 
 class TalkActivity : AppCompatActivity() {
 
@@ -49,15 +56,32 @@ class TalkActivity : AppCompatActivity() {
             val userID = FirebaseAuth.getInstance().currentUser!!.email!!
             val timestamp = System.currentTimeMillis()
 
-            // トークDBにトーク内容保存
-            val databaseHelper = TalkroomDatabaseHelper()
-            databaseHelper.addTalkHistory(talkroomId, userID, inpText, timestamp)
-            databaseHelper.close()
+            sendTalkDataAndSaveDB(talkroomId, userID, inpText, timestamp)
 
             // adapterとRecyecleViewを更新
             adapter.addTalkList(userID, inpText, timestamp)
             adapter.notifyDataSetChanged()
             chatRecycleView.smoothScrollToPosition(adapter.itemCount-1)
+        }
+    }
+
+    private fun sendTalkDataAndSaveDB(talkroomId: String, userId: String, message: String, timestamp: Long){
+        val handler = Handler()
+
+        // 通信をするためスレッドを建てる
+        thread {
+            val result = ServerConnectTalkData().sendTalkData(talkroomId, message, timestamp)
+
+            // 通信成功の場合はDB保存
+            if (result) {
+                val databaseHelper = TalkroomDatabaseHelper()
+                databaseHelper.addTalkHistory(talkroomId, userId, message, timestamp)
+                databaseHelper.close()
+            }else{
+                handler.post {
+                    Toast.makeText(this, "メッセージの送信に失敗しました", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
