@@ -16,6 +16,7 @@ import com.github.kittinunf.fuel.Fuel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import work.nityc_nyuta.mockline.ConfigurationDataClass
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.Adapters.SelectTabsAdapter
@@ -102,6 +103,10 @@ class MainActivity : AppCompatActivity() {
 
             // ログアウト
             R.id.logout -> {
+                // DB削除
+                val realmConfiguration = RealmConfiguration.Builder().build()
+                Realm.deleteRealm(realmConfiguration)
+
                 firebaseAuth.signOut()
                 Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
                 val signSelectActivity = Intent(this, SignSelectActivity::class.java)
