@@ -25,10 +25,14 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val myActivityLifeCycleCallbacks = MyActivityLifeCycleCallbacks()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Activityのライフサイクルを監視する
+        application.registerActivityLifecycleCallbacks(myActivityLifeCycleCallbacks)
 
         // サーバに最新の通知トークンを送信
         if(FirebaseAuth.getInstance().currentUser != null) {
@@ -85,6 +89,12 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         tabPager.adapter = SelectTabsAdapter(fragmentManager)
         findViewById<TabLayout>(R.id.select_tabs_layout).setupWithViewPager(tabPager)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        application.unregisterActivityLifecycleCallbacks(myActivityLifeCycleCallbacks)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
