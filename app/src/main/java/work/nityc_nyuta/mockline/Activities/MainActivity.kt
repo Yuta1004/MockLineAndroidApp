@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.github.kittinunf.fuel.Fuel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import io.realm.Realm
 import work.nityc_nyuta.mockline.ConfigurationDataClass
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.Adapters.SelectTabsAdapter
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
                 ServerConnectUserData().sendUserData("", token, "", "", "update_user")
             }
         }
+
+        Realm.init(this)
 
     }
 
