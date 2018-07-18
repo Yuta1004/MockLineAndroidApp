@@ -1,6 +1,7 @@
 package work.nityc_nyuta.mockline.Adapters
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import org.json.JSONObject
 import work.nityc_nyuta.mockline.R
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectFriendsData
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
+import kotlin.concurrent.thread
 
 class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val talkList = talkList_args
+    private val idToNameMap = mutableMapOf<String, String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // ViewTypeによって作るViewHolderを変更
@@ -40,8 +46,7 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
         when(holder_args.itemViewType){
             0 -> { // 相手からのメッセージ
                 val holder = holder_args as ChatViewHolderOpponent
-                //holder.senderNameView.text = talkList[position].senderName
-                holder.senderNameView.text = ""
+                holder.senderNameView.text = getNameFromId(talkList[position].senderId)
                 holder.bodyView.text = talkList[position].body
                 holder.timeView.text = talkList[position].time
 
@@ -79,6 +84,33 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
     
     fun addTalkList(senderId: String, message: String, time: Long){
         talkList.add(TalkData(senderId, message, time.toString()))
+    }
+
+    // Mapに既にuserIdが存在すればそれに対応する名前，なければサーバから取得して返す
+    private fun getNameFromId(userId: String): String{
+        if(idToNameMap.containsKey(userId)){
+            return idToNameMap[userId]!!
+
+        }else{
+            // スレッド監視フラグ
+            var connectEnd = false
+            var userInfo: JSONObject? = null
+
+            thread{
+                userInfo = ServerConnectUserData().getUserData(listOf(userId))
+                connectEnd = true
+            }
+            while(!connectEnd){}
+
+            // 通信に成功したらその値をmapに追加して名前を返す
+            if(userInfo != null){
+                val userName = userInfo!!.getJSONObject(userId).getString("name")
+                idToNameMap[userId] = userName
+                return userName
+            }
+        }
+
+        return ""
     }
 
     // 相手からのメッセージ用ViewHolder
