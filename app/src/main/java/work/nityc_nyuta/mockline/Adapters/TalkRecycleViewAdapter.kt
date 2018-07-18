@@ -13,6 +13,8 @@ import org.json.JSONObject
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectFriendsData
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.concurrent.thread
 
 class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -48,7 +50,7 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
                 val holder = holder_args as ChatViewHolderOpponent
                 holder.senderNameView.text = getNameFromId(talkList[position].senderId)
                 holder.bodyView.text = talkList[position].body
-                holder.timeView.text = talkList[position].time
+                holder.timeView.text = timestampToDate(talkList[position].time)
 
                 holder.iconView.layoutParams.width = 100
                 holder.iconView.layoutParams.height = 100
@@ -59,7 +61,7 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
             1 ->{ // 自分のメッセージ
                 val holder = holder_args as ChatViewHolderMe
                 holder.bodyView.text = talkList[position].body
-                holder.timeView.text = talkList[position].time
+                holder.timeView.text = timestampToDate(talkList[position].time)
             }
         }
     }
@@ -83,7 +85,7 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
     }
     
     fun addTalkList(senderId: String, message: String, time: Long){
-        talkList.add(TalkData(senderId, message, time.toString()))
+        talkList.add(TalkData(senderId, message, time))
     }
 
     // Mapに既にuserIdが存在すればそれに対応する名前，なければサーバから取得して返す
@@ -113,6 +115,13 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
         return ""
     }
 
+    // タイムスタンプを整形する
+    private fun timestampToDate(timestamp: Long): String{
+        val formatter = SimpleDateFormat("HH:mm", Locale.JAPAN)
+
+        return "  " + formatter.format(timestamp) + "  "
+    }
+
     // 相手からのメッセージ用ViewHolder
     private class ChatViewHolderOpponent(itemView: View): RecyclerView.ViewHolder(itemView){
         val senderNameView = itemView.findViewById<TextView>(R.id.sender_name)!!
@@ -131,4 +140,4 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
 }
 
 // データクラス
-data class TalkData(val senderId: String, val body: String, val time: String)
+data class TalkData(val senderId: String, val body: String, val time: Long)
