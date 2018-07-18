@@ -79,22 +79,21 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView
         talkList.add(ChatData(senderId, senderName, message, time))
     }
 
-}
-
-// 相手からのメッセージ用ViewHolder
-class ChatViewHolderOpponent(itemView: View): RecyclerView.ViewHolder(itemView){
-    val senderNameView = itemView.findViewById<TextView>(R.id.sender_name)!!
-    val bodyView = itemView.findViewById<TextView>(R.id.body)!!
-    val timeView = itemView.findViewById<TextView>(R.id.time)!!
-    val iconView = itemView.findViewById<ImageView>(R.id.icon)!!
-    val iconLinearLauout = itemView.findViewById<LinearLayout>(R.id.icon_linear_layout)!!
-}
+    // 相手からのメッセージ用ViewHolder
+    private class ChatViewHolderOpponent(itemView: View): RecyclerView.ViewHolder(itemView){
+        val senderNameView = itemView.findViewById<TextView>(R.id.sender_name)!!
+        val bodyView = itemView.findViewById<TextView>(R.id.body)!!
+        val timeView = itemView.findViewById<TextView>(R.id.time)!!
+        val iconView = itemView.findViewById<ImageView>(R.id.icon)!!
+        val iconLinearLauout = itemView.findViewById<LinearLayout>(R.id.icon_linear_layout)!!
+    }
 
 
-// 自分のメッセージ用ViewHolder
-class ChatViewHolderMe(itemView: View): RecyclerView.ViewHolder(itemView){
-    val bodyView = itemView.findViewById<TextView>(R.id.body)!!
-    val timeView = itemView.findViewById<TextView>(R.id.time)!!
+    // 自分のメッセージ用ViewHolder
+    private class ChatViewHolderMe(itemView: View): RecyclerView.ViewHolder(itemView){
+        val bodyView = itemView.findViewById<TextView>(R.id.body)!!
+        val timeView = itemView.findViewById<TextView>(R.id.time)!!
+    }
 }
 
 // データクラス
