@@ -2,9 +2,16 @@ package work.nityc_nyuta.mockline.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.util.Log
+import android.view.View
 import android.widget.Button
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_talk.*
+import kotlinx.android.synthetic.main.talk_holder_me.*
 import work.nityc_nyuta.mockline.Adapters.TalkData
 import work.nityc_nyuta.mockline.Adapters.TalkRecycleViewAdapter
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
@@ -34,13 +41,21 @@ class TalkActivity : AppCompatActivity() {
 
         // 送信ボタンが押されたら
         findViewById<Button>(R.id.send_button).setOnClickListener {
+            // 入力文字取得 -> 空判定
+            val inpText = findViewById<TextInputEditText>(R.id.message_inp).text.toString()
+            if(inpText == ""){ return@setOnClickListener }
+            findViewById<TextInputEditText>(R.id.message_inp).setText("")
+
+            val userID = FirebaseAuth.getInstance().currentUser!!.email!!
+            val timestamp = System.currentTimeMillis()
+
             // トークDBにトーク内容保存
             val databaseHelper = TalkroomDatabaseHelper()
-            databaseHelper.addTalkHistory(talkroomId, "guguru0014@gmail.com", "テスト送信です", 0)
+            databaseHelper.addTalkHistory(talkroomId, userID, inpText, timestamp)
             databaseHelper.close()
 
             // adapterとRecyecleViewを更新
-            adapter.addTalkList("guguru0014@gmail.com", "テスト送信です", 0)
+            adapter.addTalkList(userID, inpText, timestamp)
             adapter.notifyDataSetChanged()
             chatRecycleView.smoothScrollToPosition(adapter.itemCount-1)
         }
@@ -61,7 +76,7 @@ class TalkActivity : AppCompatActivity() {
         val talkHistory = databaseHelper.getTalkHistory(talkroomId)
         if(talkHistory != null){
             for(talkData in talkHistory){
-                talkList.add(TalkData(talkData.senderId, talkData.message, talkData.timestamp.toString()))
+                talkList.add(TalkData(talkData.senderId, talkData.message, talkData.timestamp))
             }
         }
 
