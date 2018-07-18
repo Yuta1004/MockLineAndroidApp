@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
-import work.nityc_nyuta.mockline.Adapters.ChatData
+import work.nityc_nyuta.mockline.Adapters.TalkData
 import work.nityc_nyuta.mockline.Adapters.TalkRecycleViewAdapter
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
 import work.nityc_nyuta.mockline.R
@@ -27,6 +27,7 @@ class TalkActivity : AppCompatActivity() {
         chatRecycleView.setHasFixedSize(true)
         chatRecycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        // adapter設定
         val adapter = TalkRecycleViewAdapter(createTakeList(talkroomId, talkroomName, listOf("")))
         chatRecycleView.adapter = adapter
         chatRecycleView.scrollToPosition(adapter.itemCount-1)
@@ -46,7 +47,7 @@ class TalkActivity : AppCompatActivity() {
     }
 
     // トーク履歴を生成する
-    private fun createTakeList(talkroomId: String, talkroomName: String, talkroomUserList: List<String>): MutableList<ChatData>{
+    private fun createTakeList(talkroomId: String, talkroomName: String, talkroomUserList: List<String>): MutableList<TalkData>{
         val databaseHelper = TalkroomDatabaseHelper()
 
         // トークルームテーブルが存在しない場合はテーブル作成
@@ -54,13 +55,13 @@ class TalkActivity : AppCompatActivity() {
             databaseHelper.makeTalkroom(talkroomId, talkroomName, talkroomUserList)
         }
 
-        val talkList = mutableListOf<ChatData>()
+        val talkList = mutableListOf<TalkData>()
 
         // トーク履歴取得
         val talkHistory = databaseHelper.getTalkHistory(talkroomId)
         if(talkHistory != null){
             for(talkData in talkHistory){
-                talkList.add(ChatData(talkData.senderId, talkData.message, talkData.timestamp.toString()))
+                talkList.add(TalkData(talkData.senderId, talkData.message, talkData.timestamp.toString()))
             }
         }
 

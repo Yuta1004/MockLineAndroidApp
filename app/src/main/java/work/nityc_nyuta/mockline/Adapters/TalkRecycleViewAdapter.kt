@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import work.nityc_nyuta.mockline.R
 
-class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val talkList = talkList_args
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -78,7 +78,7 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView
     }
     
     fun addTalkList(senderId: String, message: String, time: Long){
-        talkList.add(ChatData(senderId, message, time.toString()))
+        talkList.add(TalkData(senderId, message, time.toString()))
     }
 
     // 相手からのメッセージ用ViewHolder
@@ -99,4 +99,4 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView
 }
 
 // データクラス
-data class ChatData(val senderId: String, val body: String, val time: String)
+data class TalkData(val senderId: String, val body: String, val time: String)
