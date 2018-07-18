@@ -101,7 +101,7 @@ class TalkActivity : AppCompatActivity() {
 
             // 通信成功の場合はDB保存
             if (result) {
-                val databaseHelper = TalkroomDatabaseHelper()
+                val databaseHelper = TalkroomDatabaseHelper(this)
                 databaseHelper.addTalkHistory(talkroomId, userId, message, timestamp)
                 databaseHelper.close()
             }else{
@@ -119,7 +119,7 @@ class TalkActivity : AppCompatActivity() {
 
     // トーク履歴を生成する
     private fun createTakeList(talkroomId: String, talkroomName: String, talkroomUserList: List<String>): MutableList<TalkData>{
-        val databaseHelper = TalkroomDatabaseHelper()
+        val databaseHelper = TalkroomDatabaseHelper(this)
 
         // トークルームテーブルが存在しない場合はテーブル作成
         if(!databaseHelper.existenceTalkroom(talkroomId)){

@@ -1,13 +1,16 @@
 package work.nityc_nyuta.mockline.Database
 
+import android.content.Context
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.internal.Table
 
-class TalkroomDatabaseHelper{
+class TalkroomDatabaseHelper(context: Context){
     private var realmInstance: Realm? = null
 
     init{
+        // contextがnullでない場合は強制的にそのcontextで初期化
+        Realm.init(context)
         realmInstance = Realm.getDefaultInstance()
     }
 
