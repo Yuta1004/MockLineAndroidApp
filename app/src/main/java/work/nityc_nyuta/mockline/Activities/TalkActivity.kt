@@ -6,16 +6,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import work.nityc_nyuta.mockline.Adapters.ChatData
-import work.nityc_nyuta.mockline.Adapters.ChatRecycleViewAdapter
-import work.nityc_nyuta.mockline.ConfigurationDataClass
+import work.nityc_nyuta.mockline.Adapters.TalkRecycleViewAdapter
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
 import work.nityc_nyuta.mockline.R
 
-class ChatActivity : AppCompatActivity() {
+class TalkActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+        setContentView(R.layout.activity_talk)
 
         // トークルームID取得
         val senderIntent = intent
@@ -28,7 +27,7 @@ class ChatActivity : AppCompatActivity() {
         chatRecycleView.setHasFixedSize(true)
         chatRecycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val adapter = ChatRecycleViewAdapter(createTakeList(talkroomId, talkroomName, listOf("")))
+        val adapter = TalkRecycleViewAdapter(createTakeList(talkroomId, talkroomName, listOf("")))
         chatRecycleView.adapter = adapter
         chatRecycleView.scrollToPosition(adapter.itemCount-1)
 

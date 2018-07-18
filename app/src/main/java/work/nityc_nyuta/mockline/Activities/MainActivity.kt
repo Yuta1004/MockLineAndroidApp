@@ -10,7 +10,6 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import com.github.kittinunf.fuel.Fuel
@@ -73,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(signSelectActivity)
         }
 
-        val chatActivity = Intent(this, ChatActivity::class.java)
+        val chatActivity = Intent(this, TalkActivity::class.java)
 //        startActivity(chatActivity)
     }
 

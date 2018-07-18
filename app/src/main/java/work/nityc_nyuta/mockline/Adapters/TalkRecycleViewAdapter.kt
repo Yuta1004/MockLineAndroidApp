@@ -10,24 +10,24 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import work.nityc_nyuta.mockline.R
 
-class ChatRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TalkRecycleViewAdapter(talkList_args: MutableList<ChatData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val talkList = talkList_args
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // ViewTypeによって作るViewHolderを変更
         when(viewType){
             0 -> { // 相手からのメッセージ用ViewHolder
-                val rowView = LayoutInflater.from(parent.context).inflate(R.layout.chat_holder_opponent, parent, false)
+                val rowView = LayoutInflater.from(parent.context).inflate(R.layout.talk_holder_opponent, parent, false)
                 return ChatViewHolderOpponent(rowView)
             }
 
             1 ->{ // 自分のメッセージ用ViewHolder
-                val rowView = LayoutInflater.from(parent.context).inflate(R.layout.chat_holder_me, parent, false)
+                val rowView = LayoutInflater.from(parent.context).inflate(R.layout.talk_holder_me, parent, false)
                 return ChatViewHolderMe(rowView)
             }
 
             else ->{
-                val rowView = LayoutInflater.from(parent.context).inflate(R.layout.chat_holder_opponent, parent, false)
+                val rowView = LayoutInflater.from(parent.context).inflate(R.layout.talk_holder_opponent, parent, false)
                 return ChatViewHolderOpponent(rowView)
             }
         }

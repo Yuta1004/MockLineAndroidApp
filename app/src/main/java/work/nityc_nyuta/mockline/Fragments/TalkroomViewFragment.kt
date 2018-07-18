@@ -1,18 +1,13 @@
 package work.nityc_nyuta.mockline.Fragments
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.util.Log
 import android.view.*
 import android.widget.ListView
 import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONObject
-import work.nityc_nyuta.mockline.Activities.ChatActivity
-import work.nityc_nyuta.mockline.Activities.MakeTalkroomActivity
+import work.nityc_nyuta.mockline.Activities.TalkActivity
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectTalkroomData
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.Adapters.Talkroom
@@ -100,7 +95,7 @@ class TalkroomViewFragment : Fragment() {
 
         // トークルームが選択されたら
         talkroomListview.setOnItemClickListener { parent, view, position, id ->
-            val chatActivity = Intent(activity, ChatActivity::class.java)
+            val chatActivity = Intent(activity, TalkActivity::class.java)
             chatActivity.putExtra("id", talkroomListAdapter!!.talkroomList[position].id)
             chatActivity.putExtra("name", talkroomListAdapter!!.talkroomList[position].name)
             startActivity(chatActivity)
