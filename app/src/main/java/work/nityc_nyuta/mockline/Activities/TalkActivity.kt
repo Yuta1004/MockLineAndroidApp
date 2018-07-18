@@ -1,10 +1,15 @@
 package work.nityc_nyuta.mockline.Activities
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.design.widget.TextInputEditText
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -23,8 +28,12 @@ import work.nityc_nyuta.mockline.ServerConncection.ServerConnectTalkData
 import javax.net.ServerSocketFactory
 import javax.net.ssl.HandshakeCompletedListener
 import kotlin.concurrent.thread
+import kotlin.reflect.jvm.internal.impl.resolve.constants.LongValue
 
 class TalkActivity : AppCompatActivity() {
+    private var talkRecycleView: RecyclerView? = null
+    private var talkRecycleViewAdapter: TalkRecycleViewAdapter? = null
+    private var notifyBroadCastReceiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +45,39 @@ class TalkActivity : AppCompatActivity() {
         val talkroomName = senderIntent.getStringExtra("name")
         title = talkroomName
 
+        // LocalBroadReceiverのリスナ
+        // Firebase:onMessageReceiveからの情報を待機する
+        notifyBroadCastReceiver = object : BroadcastReceiver(){
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val talkroomIdReceive = intent!!.getStringExtra("talkroomId")
+                val senderIdReceive = intent.getStringExtra("senderId")
+                val messageReceive = intent.getStringExtra("message")
+                val timestampReceive = intent.getLongExtra("timestamp", 0)
+
+                if(talkroomId == talkroomIdReceive){
+                    adapterAndRecycleViewUpdate(senderIdReceive, messageReceive, timestampReceive)
+                }
+            }
+        }
+
+        // LocalBroadReceiverを登録する
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("UpdateRecyclerView")
+        LocalBroadcastManager.getInstance(applicationContext).registerReceiver(notifyBroadCastReceiver!!, intentFilter)
+
         // RecycleViewの設定
-        val chatRecycleView = findViewById<RecyclerView>(R.id.chat_recycle_view)
-        chatRecycleView.setHasFixedSize(true)
-        chatRecycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        talkRecycleView = findViewById<RecyclerView>(R.id.chat_recycle_view)
+        talkRecycleView!!.setHasFixedSize(true)
+        talkRecycleView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         // adapter設定
-        val adapter = TalkRecycleViewAdapter(createTakeList(talkroomId, talkroomName, listOf("")))
-        chatRecycleView.adapter = adapter
-        chatRecycleView.scrollToPosition(adapter.itemCount-1)
+        talkRecycleViewAdapter = TalkRecycleViewAdapter(createTakeList(talkroomId, talkroomName, listOf("")))
+        talkRecycleView!!.adapter = talkRecycleViewAdapter
+        talkRecycleView!!.scrollToPosition(talkRecycleViewAdapter!!.itemCount-1)
 
-        // 送信ボタンが押されたら
+        // 送信ボタンのリスナ
         findViewById<Button>(R.id.send_button).setOnClickListener {
-            // 入力文字取得 -> 空判定
+            // 入力取得 -> 判定
             val inpText = findViewById<TextInputEditText>(R.id.message_inp).text.toString()
             if(inpText == ""){ return@setOnClickListener }
             findViewById<TextInputEditText>(R.id.message_inp).setText("")
@@ -56,12 +85,10 @@ class TalkActivity : AppCompatActivity() {
             val userID = FirebaseAuth.getInstance().currentUser!!.email!!
             val timestamp = System.currentTimeMillis()
 
+            // サーバへトーク内容を送信，DBへ保存，adapterとRecyecleViewを更新
             sendTalkDataAndSaveDB(talkroomId, userID, inpText, timestamp)
-
-            // adapterとRecyecleViewを更新
-            adapter.addTalkList(userID, inpText, timestamp)
-            adapter.notifyDataSetChanged()
-            chatRecycleView.smoothScrollToPosition(adapter.itemCount-1)
+            adapterAndRecycleViewUpdate(userID, inpText, timestamp)
+            talkRecycleView!!.smoothScrollToPosition(talkRecycleViewAdapter!!.itemCount-1)
         }
     }
 
@@ -85,6 +112,11 @@ class TalkActivity : AppCompatActivity() {
         }
     }
 
+    private fun adapterAndRecycleViewUpdate(userId: String, message: String, timestamp: Long){
+        talkRecycleViewAdapter!!.addTalkList(userId, message, timestamp)
+        talkRecycleViewAdapter!!.notifyDataSetChanged()
+    }
+
     // トーク履歴を生成する
     private fun createTakeList(talkroomId: String, talkroomName: String, talkroomUserList: List<String>): MutableList<TalkData>{
         val databaseHelper = TalkroomDatabaseHelper()
@@ -106,6 +138,13 @@ class TalkActivity : AppCompatActivity() {
 
         databaseHelper.close()
         return talkList
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // BroadCastReceiverを登録解除する
+        LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(notifyBroadCastReceiver!!)
     }
 
     // チャット履歴を生成する(デバッグ用)

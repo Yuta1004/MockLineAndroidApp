@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activities.MainActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden">
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +24,13 @@
         </activity>
         <activity
             android:name=".Activities.LoginActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />
 
         <!-- バックグラウンドで処理を行う(高度な処理)際に必要 トークン新規作成時の処理も行う -->
         <service android:name=".Firebase.MockLineFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="UpdateRecyclerView" />
             </intent-filter>
         </service>
 
@@ -57,16 +58,24 @@
         <!-- android:value="@string/default_notification_channel_id"/> -->
         <activity
             android:name=".Activities.SignSelectActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />
+
+
         <activity
             android:name=".Activities.RegisterActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />
+
         <activity
             android:name=".Activities.TalkActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="UpdateRecyclerView" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Activities.MakeTalkroomActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden"/>
     </application>
 
 </manifest>
