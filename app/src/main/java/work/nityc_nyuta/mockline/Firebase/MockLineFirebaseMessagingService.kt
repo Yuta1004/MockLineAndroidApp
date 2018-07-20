@@ -14,10 +14,12 @@ import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import org.json.JSONObject
 import work.nityc_nyuta.mockline.Activities.MyActivityLifeCycleCallbacks
 import work.nityc_nyuta.mockline.Activities.TalkActivity
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
 import work.nityc_nyuta.mockline.R
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectTalkroomData
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
 import kotlin.concurrent.thread
 
@@ -43,13 +45,41 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
         val message = receiveData["message"]!!
         val timestamp = receiveData["timestamp"]!!.toLong()
 
+        val talkroomDatabaseHelper = TalkroomDatabaseHelper(applicationContext)
+
+        // DBにトークルームが存在しない場合は新規作成
+        if(!talkroomDatabaseHelper.existenceTalkroom(talkroomId)){
+            val userList = mutableListOf<String>()
+
+            // 通信するためスレッドを建てる
+            // スレッド終了まで待機するためにwhileループ
+            var connectEnd = false
+            var talkroomData: JSONObject? = null
+            thread {
+                talkroomData = ServerConnectTalkroomData().getTalkroomData(talkroomId)
+                connectEnd = true
+            }
+            while(!connectEnd){}
+
+            // 通信成功
+            if(talkroomData != null){
+                // トークルームのユーザリストを作成
+                val talkroomUserListArray = talkroomData!!.getJSONArray("talkroom_user_list")
+
+                for(idx in 0 until talkroomUserListArray.length()){
+                    userList.add(talkroomUserListArray.getString(idx))
+                }
+            }
+
+            talkroomDatabaseHelper.makeTalkroom(talkroomId, talkroomName, userList)
+        }
+
         // TalkroomActivityへ新規メッセージが来たことを通知
         notifyReceiveNewMessage(talkroomId, senderId, message, timestamp)
 
         // DB保存
-        val databaseHelper = TalkroomDatabaseHelper(applicationContext)
-        databaseHelper.addTalkHistory(talkroomId, senderId, message, timestamp)
-        databaseHelper.close()
+        talkroomDatabaseHelper.addTalkHistory(talkroomId, senderId, message, timestamp)
+        talkroomDatabaseHelper.close()
 
         // 現在表示中の画面がトークルームで，かつIDがtalkroomIDと同じ出ないなら通知を発行
         if(talkroomId != MyActivityLifeCycleCallbacks.nowDisplayTalkroomID){
