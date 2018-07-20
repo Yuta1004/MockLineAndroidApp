@@ -88,7 +88,6 @@ class TalkActivity : AppCompatActivity() {
             // サーバへトーク内容を送信，DBへ保存，adapterとRecyecleViewを更新
             sendTalkDataAndSaveDB(talkroomId, userID, inpText, timestamp)
             adapterAndRecycleViewUpdate(userID, inpText, timestamp)
-            talkRecycleView!!.smoothScrollToPosition(talkRecycleViewAdapter!!.itemCount-1)
         }
     }
 
@@ -115,6 +114,7 @@ class TalkActivity : AppCompatActivity() {
     private fun adapterAndRecycleViewUpdate(userId: String, message: String, timestamp: Long){
         talkRecycleViewAdapter!!.addTalkList(userId, message, timestamp)
         talkRecycleViewAdapter!!.notifyDataSetChanged()
+        talkRecycleView!!.smoothScrollToPosition(talkRecycleViewAdapter!!.itemCount-1)
     }
 
     // トーク履歴を生成する
