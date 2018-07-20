@@ -52,10 +52,10 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
                 holder.bodyView.text = talkList[position].body
                 holder.timeView.text = timestampToDate(talkList[position].time)
 
-                holder.iconView.layoutParams.width = 100
-                holder.iconView.layoutParams.height = 100
-                holder.iconLinearLauout.layoutParams.width = 20
-                holder.iconLinearLauout.layoutParams.height = 100
+//                holder.iconView.layoutParams.width = 100
+//                holder.iconView.layoutParams.height = 100
+//                holder.iconLinearLauout.layoutParams.width = 20
+//                holder.iconLinearLauout.layoutParams.height = 100
             }
 
             1 ->{ // 自分のメッセージ
@@ -128,7 +128,7 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
         val bodyView = itemView.findViewById<TextView>(R.id.body)!!
         val timeView = itemView.findViewById<TextView>(R.id.time)!!
         val iconView = itemView.findViewById<ImageView>(R.id.icon)!!
-        val iconLinearLauout = itemView.findViewById<LinearLayout>(R.id.icon_linear_layout)!!
+//        val iconLinearLauout = itemView.findViewById<LinearLayout>(R.id.icon_linear_layout)!!
     }
 
 
