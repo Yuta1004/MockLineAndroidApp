@@ -1,8 +1,13 @@
 package work.nityc_nyuta.mockline.Fragments
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.LocalBroadcastManager
+import android.util.Log
 import android.view.*
 import android.widget.ListView
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +23,7 @@ import kotlin.concurrent.thread
 
 class TalkroomViewFragment : Fragment() {
     private var layoutView: View? = null
+    private var localBroadcastReceiver: BroadcastReceiver? = null
 
     // TalkroomListViewのadapterを保持しておく　<- 無駄な通信をしない
     companion object {
@@ -27,6 +33,23 @@ class TalkroomViewFragment : Fragment() {
 
     // FragmentのViewが生成されるときに呼ばれる
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // LocalBroadCastのレシーバ
+        localBroadcastReceiver = object: BroadcastReceiver(){
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if(intent!!.action == "UpdateTalkroomListView") {
+                    // ListViewリセット
+                    setTalkroomListViewAdapter()
+                    setTalkroomListView()
+                    usedUserID = FirebaseAuth.getInstance().currentUser!!.email!!
+                }
+            }
+        }
+
+        // レシーバを登録
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("UpdateTalkroomListView")
+        LocalBroadcastManager.getInstance(activity!!).registerReceiver(localBroadcastReceiver!!, intentFilter)
+
         layoutView = inflater.inflate(R.layout.fragment_talkroom_view, container, false)
         return layoutView
     }
@@ -100,6 +123,13 @@ class TalkroomViewFragment : Fragment() {
             chatActivity.putExtra("name", talkroomListAdapter!!.talkroomList[position].name)
             startActivity(chatActivity)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // レシーバの登録解除
+        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(localBroadcastReceiver!!)
     }
 
 

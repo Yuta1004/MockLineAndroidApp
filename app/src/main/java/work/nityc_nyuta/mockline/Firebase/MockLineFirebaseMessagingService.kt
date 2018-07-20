@@ -18,6 +18,7 @@ import org.json.JSONObject
 import work.nityc_nyuta.mockline.Activities.MyActivityLifeCycleCallbacks
 import work.nityc_nyuta.mockline.Activities.TalkActivity
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
+import work.nityc_nyuta.mockline.Fragments.TalkroomViewFragment
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectTalkroomData
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
@@ -72,6 +73,12 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
             }
 
             talkroomDatabaseHelper.makeTalkroom(talkroomId, talkroomName, userList)
+
+            // TalkroomのListviewを更新するようにLocalBroadCastを飛ばす
+            val sendIntent= Intent()
+            sendIntent.action = "UpdateTalkroomListView"
+            TalkroomViewFragment.talkroomListAdapter = null
+            notifyBroadCaster!!.sendBroadcast(sendIntent)
         }
 
         // TalkroomActivityへ新規メッセージが来たことを通知

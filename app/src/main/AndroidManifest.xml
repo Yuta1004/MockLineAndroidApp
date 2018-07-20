@@ -20,6 +20,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="UpdateTalkroomListView"/>
             </intent-filter>
         </activity>
         <activity
@@ -31,6 +32,7 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="UpdateRecyclerView" />
+                <action android:name="UpdateTalkroomListView"/>
             </intent-filter>
         </service>
 
