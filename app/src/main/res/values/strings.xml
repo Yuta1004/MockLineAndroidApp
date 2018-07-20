@@ -11,4 +11,6 @@
     <string name="talkroom_name_inp_text">トークルーム名</string>
     <string name="talkroom_select_friends_inp_text">友達選択</string>
     <string name="make_talkroom_button_text">トークルーム作成</string>
+    <string name="notify_channel_id">new_talk_notify</string>
+    <string name="notify_channel_name">新規トーク通知</string>
 </resources>

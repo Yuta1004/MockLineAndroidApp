@@ -1,8 +1,11 @@
 package work.nityc_nyuta.mockline.Activities
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -41,6 +44,17 @@ class MainActivity : AppCompatActivity() {
                 val token = FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
                 ServerConnectUserData().sendUserData("", token, "", "", "update_user")
             }
+        }
+
+        // AndroidのバージョンがOreo以上なら通知チャンネルを作成する
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channelId = getString(R.string.notify_channel_id)
+            val channelName = getString(R.string.notify_channel_name)
+            val notificationManager =
+                    getSystemService(NotificationManager::class.java) as NotificationManager
+            notificationManager.createNotificationChannel(
+                    NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
+            )
         }
 
         Realm.init(this)

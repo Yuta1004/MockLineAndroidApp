@@ -86,6 +86,7 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
         builder.setSmallIcon(R.drawable.ic_person_black_24dp)
         builder.setContentTitle(talkroomName)
         builder.setContentText(message)
+        builder.setChannelId(getString(R.string.notify_channel_id))
 
         // 通知が押された時のインテント
         val talkIntent = Intent(applicationContext, TalkActivity::class.java)
