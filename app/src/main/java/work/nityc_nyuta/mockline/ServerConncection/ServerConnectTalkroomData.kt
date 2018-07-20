@@ -42,6 +42,29 @@ class ServerConnectTalkroomData{
     // データクラス
     data class JsonBaseGetJoinTalkrooms(val id: String)
 
+    fun getTalkroomData(talkroomId: String): JSONObject?{
+        // Json生成
+        val adapter = Moshi.Builder().build().adapter(JsonBaseGetTalkroomData::class.java)
+        val jsonData = adapter.toJson(JsonBaseGetTalkroomData(talkroomId))
+        val header = hashMapOf("Content-Type" to "applicaton/json")
+
+        // http post
+        val serverAddress = ConfigurationDataClass().serverAddress
+        val (request, response, result) =
+                Fuel.post("$serverAddress/get_talkroom_data").header(header).body(jsonData).response()
+
+        // 通信エラーを起こさなかったらJsonObjectを返す
+        val (data, error) = result
+        if(error == null){
+            return JSONObject(String(response.data))
+        }else{
+            return null
+        }
+    }
+
+    // データクラス
+    data class JsonBaseGetTalkroomData(val talkroom_id: String)
+
     fun sendMakeTalkroom(user_list: String, talkroom_name: String){
         //　Json生成
         val adapter = Moshi.Builder().build().adapter(JsonBaseSendMakeTalkroom::class.java)
