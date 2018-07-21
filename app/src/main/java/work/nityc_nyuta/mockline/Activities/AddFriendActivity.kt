@@ -30,6 +30,9 @@ class AddFriendActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        // QRを読み取らなかった場合
+        if(data == null || !data.hasExtra("Result")){ return }
+
         // QR読み取り結果がnullでない = 正しいものなら
         val readQRResult = readQRResult(data!!.getStringExtra("Result"))
         Log.d("Result", readQRResult.toString())
@@ -90,6 +93,8 @@ class AddFriendActivity : AppCompatActivity() {
             alertDialogBuilder.setNegativeButton("追加しない"){ _, _ -> }
 
             alertDialogBuilder.show()
+        }else{
+            Toast.makeText(this, "不正なQRコードです", Toast.LENGTH_SHORT).show()
         }
     }
 
