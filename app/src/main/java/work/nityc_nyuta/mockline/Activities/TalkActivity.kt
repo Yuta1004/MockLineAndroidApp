@@ -223,6 +223,11 @@ class TalkActivity : AppCompatActivity() {
                                 Toast.makeText(this, "退出に失敗しました", Toast.LENGTH_SHORT).show()
                             }
 
+                            // トークルーム削除
+                            val databaseHelper = TalkroomDatabaseHelper(this)
+                            databaseHelper.removeTalkroom(talkroomId)
+                            databaseHelper.close()
+
                             // adapterをnullにしてTalkroomListの更新をかける
                             TalkroomViewFragment.talkroomListAdapter = null
                             finish()
