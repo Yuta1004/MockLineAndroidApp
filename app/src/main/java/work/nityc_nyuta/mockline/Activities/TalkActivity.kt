@@ -14,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -145,6 +147,26 @@ class TalkActivity : AppCompatActivity() {
 
         // BroadCastReceiverを登録解除する
         LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(notifyBroadCastReceiver!!)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.talkactivity_option_menu, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId){
+            R.id.invite_talkroom ->{
+                Toast.makeText(this, "トークルーム招待", Toast.LENGTH_SHORT).show()
+            }
+
+            R.id.exit_talkroom -> {
+                Toast.makeText(this, "トークルーム退出", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     // チャット履歴を生成する(デバッグ用)
