@@ -86,7 +86,7 @@ class TalkroomViewFragment : Fragment() {
         }
 
         // スレッド終了まで待機
-        while(!connectEnd){}
+                while(!connectEnd){ Thread.sleep(100) }
 
         // 通信結果がnullでないなら
         val listviewSetList = mutableListOf<Talkroom>()

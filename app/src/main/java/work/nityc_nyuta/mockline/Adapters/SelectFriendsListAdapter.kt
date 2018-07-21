@@ -40,7 +40,7 @@ class SelectFriendsListAdapter(layoutInflater_args: LayoutInflater): BaseAdapter
         }
 
         // スレッドが終了するまで待つ
-        while(!connectionEnd){}
+        while(!connectionEnd){ Thread.sleep(100) }
     }
 
     override fun getCount(): Int {

@@ -57,7 +57,7 @@ class FriendsViewFragment : Fragment() {
         }
 
         // スレッド終了まで待機
-        while(!connectEnd){}
+        while(!connectEnd){ Thread.sleep(100) }
 
         // 友達情報が取得できたら
         if (friendIdList != null) {

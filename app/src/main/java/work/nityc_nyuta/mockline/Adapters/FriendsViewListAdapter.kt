@@ -42,7 +42,7 @@ class FriendsViewListAdapter(friendsIdList_args: List<String>, layoutInflater_ar
         }
 
         // スレッドが終了したら関数終了
-        while(!connnectionEnd){}
+        while(!connnectionEnd){ Thread.sleep(100) }
     }
 
     override fun getCount(): Int {

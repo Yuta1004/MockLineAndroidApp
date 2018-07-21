@@ -60,7 +60,7 @@ class MockLineFirebaseMessagingService: FirebaseMessagingService(){
                 talkroomData = ServerConnectTalkroomData().getTalkroomData(talkroomId)
                 connectEnd = true
             }
-            while(!connectEnd){}
+            while(!connectEnd){ Thread.sleep(100) }
 
             // 通信成功
             if(talkroomData != null){

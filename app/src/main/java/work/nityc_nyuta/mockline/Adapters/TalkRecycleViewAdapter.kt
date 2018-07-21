@@ -102,7 +102,7 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
                 userInfo = ServerConnectUserData().getUserData(listOf(userId))
                 connectEnd = true
             }
-            while(!connectEnd){}
+            while(!connectEnd){ Thread.sleep(100) }
 
             // 通信に成功したらその値をmapに追加して名前を返す
             if(userInfo != null){
