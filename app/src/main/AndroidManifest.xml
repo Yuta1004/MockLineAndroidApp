@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +21,8 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="UpdateTalkroomListView"/>
+
+                <action android:name="UpdateTalkroomListView" />
             </intent-filter>
         </activity>
         <activity
@@ -32,7 +34,7 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="UpdateRecyclerView" />
-                <action android:name="UpdateTalkroomListView"/>
+                <action android:name="UpdateTalkroomListView" />
             </intent-filter>
         </service>
 
@@ -61,12 +63,9 @@
         <activity
             android:name=".Activities.SignSelectActivity"
             android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />
-
-
         <activity
             android:name=".Activities.RegisterActivity"
             android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />
-
         <activity
             android:name=".Activities.TalkActivity"
             android:windowSoftInputMode="stateVisible|stateAlwaysHidden">
@@ -74,10 +73,11 @@
                 <action android:name="UpdateRecyclerView" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.MakeTalkroomActivity"
-            android:windowSoftInputMode="stateVisible|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />
+        <activity android:name=".Activities.QRReadActivity" />
+        <activity android:name=".Activities.AddFriendActivity"></activity>
     </application>
 
 </manifest>
