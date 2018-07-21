@@ -1,6 +1,7 @@
 package work.nityc_nyuta.mockline.Activities
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -67,6 +68,10 @@ class TalkActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // 表示したトークルームの通知を削除する
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(talkroomId, 0)
 
         // LocalBroadReceiverを登録する
         val intentFilter = IntentFilter()
