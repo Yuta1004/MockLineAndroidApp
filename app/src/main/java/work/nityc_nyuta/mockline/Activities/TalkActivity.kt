@@ -1,15 +1,13 @@
 package work.nityc_nyuta.mockline.Activities
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.design.widget.TextInputEditText
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -25,8 +23,10 @@ import kotlinx.android.synthetic.main.talk_holder_me.*
 import work.nityc_nyuta.mockline.Adapters.TalkData
 import work.nityc_nyuta.mockline.Adapters.TalkRecycleViewAdapter
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
+import work.nityc_nyuta.mockline.Fragments.TalkroomViewFragment
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectTalkData
+import work.nityc_nyuta.mockline.ServerConncection.ServerConnectTalkroomData
 import javax.net.ServerSocketFactory
 import javax.net.ssl.HandshakeCompletedListener
 import kotlin.concurrent.thread
@@ -36,6 +36,7 @@ class TalkActivity : AppCompatActivity() {
     private var talkRecycleView: RecyclerView? = null
     private var talkRecycleViewAdapter: TalkRecycleViewAdapter? = null
     private var notifyBroadCastReceiver: BroadcastReceiver? = null
+    private var talkroomId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,7 @@ class TalkActivity : AppCompatActivity() {
 
         // トークルームID取得
         val senderIntent = intent
-        val talkroomId = senderIntent.getStringExtra("id")
+        talkroomId = senderIntent.getStringExtra("id")
         val talkroomName = senderIntent.getStringExtra("name")
         title = talkroomName
 
@@ -155,6 +156,7 @@ class TalkActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    // オプションメニューがクリックされたら
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
             R.id.invite_talkroom ->{
@@ -162,9 +164,39 @@ class TalkActivity : AppCompatActivity() {
             }
 
             R.id.exit_talkroom -> {
-                Toast.makeText(this, "トークルーム退出", Toast.LENGTH_SHORT).show()
+                // 退出確認のダイアログを出す
+                AlertDialog.Builder(this)
+                        .setTitle("退出確認")
+                        .setMessage("本当に退出してもよろしいですか？")
+
+                        // 退出する
+                        .setPositiveButton("OK"){ _, _ ->
+                            val handler = Handler()
+                            thread {
+                                // サーバ通信
+                                val result = ServerConnectTalkroomData().exitTalkroom(talkroomId)
+
+                                // UI操作をするためハンドラを使う
+                                handler.post {
+                                    if (result) {
+                                        Toast.makeText(this, "${title}を退出しました", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(this, "退出に失敗しました", Toast.LENGTH_SHORT).show()
+                                    }
+
+                                    // adapterをnullにしてTalkroomListの更新をかける
+                                    TalkroomViewFragment.talkroomListAdapter = null
+                                    finish()
+                                }
+                            }
+                        }
+
+                        // 退出しない(何もしない)
+                        .setNegativeButton("CANCEL"){ _, _ -> }
+                        .show()
             }
         }
+
 
         return super.onOptionsItemSelected(item)
     }
