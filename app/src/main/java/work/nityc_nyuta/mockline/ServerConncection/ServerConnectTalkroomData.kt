@@ -39,9 +39,6 @@ class ServerConnectTalkroomData{
         return null
     }
 
-    // データクラス
-    data class JsonBaseGetJoinTalkrooms(val id: String)
-
     fun getTalkroomData(talkroomId: String): JSONObject?{
         // Json生成
         val adapter = Moshi.Builder().build().adapter(JsonBaseGetTalkroomData::class.java)
@@ -62,9 +59,6 @@ class ServerConnectTalkroomData{
         }
     }
 
-    // データクラス
-    data class JsonBaseGetTalkroomData(val talkroom_id: String)
-
     fun sendMakeTalkroom(user_list: String, talkroom_name: String){
         //　Json生成
         val adapter = Moshi.Builder().build().adapter(JsonBaseSendMakeTalkroom::class.java)
@@ -77,6 +71,43 @@ class ServerConnectTalkroomData{
                 Fuel.post("$serverAddress/make_talkroom").header(header).body(jsonData).response()
     }
 
-    // データクラス
+    fun exitTalkroom(talkroomId: String): Boolean{
+        val userId = FirebaseAuth.getInstance().currentUser!!.email!!
+
+        // Jsonパース
+        val adapter = Moshi.Builder().build().adapter(JsonBaseExitTalkroom::class.java)
+        val jsonData = adapter.toJson(JsonBaseExitTalkroom(talkroomId, userId))
+        val header = hashMapOf("Content-Type" to "application/json")
+
+        // http_post
+        val serverAddress = ConfigurationDataClass().serverAddress
+        val (request, response, result) =
+                Fuel.post("$serverAddress/exit_talkroom").header(header).body(jsonData).response()
+
+        val (data, error) = result
+
+        return error == null
+    }
+
+    fun inviteTalkroom(talkroomId: String, inviteUserIds: List<String>): Boolean{
+        // Jsonパース
+        val adapter = Moshi.Builder().build().adapter(JsonBaseInviteTalkroom::class.java)
+        val jsonData = adapter.toJson(JsonBaseInviteTalkroom(talkroomId, inviteUserIds))
+        val header = hashMapOf("Content-Type" to "application/json")
+
+        // http_post
+        val serverAddress = ConfigurationDataClass().serverAddress
+        val (request, response, result) =
+                Fuel.post("$serverAddress/join_talkroom").header(header).body(jsonData).response()
+
+        val (data, error) = result
+
+        return error == null
+    }
+
+    data class JsonBaseGetJoinTalkrooms(val id: String)
+    data class JsonBaseGetTalkroomData(val talkroom_id: String)
     data class JsonBaseSendMakeTalkroom(val user_list: String, val talkroom_name: String)
+    data class JsonBaseExitTalkroom(val talkroom_id: String, val user_id: String)
+    data class JsonBaseInviteTalkroom(val talkroom_id: String, val user_ids: List<String>)
 }
