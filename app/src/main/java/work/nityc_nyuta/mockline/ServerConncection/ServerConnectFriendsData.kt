@@ -1,5 +1,6 @@
 package work.nityc_nyuta.mockline.ServerConncection
 
+import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.moshi.Moshi
@@ -43,6 +44,30 @@ class ServerConnectFriendsData {
         }
     }
 
+    fun addFriend(friendUserId: String): String?{
+        val userId = FirebaseAuth.getInstance().currentUser!!.email!!
+
+        // Jsonパース
+        val adapter = Moshi.Builder().build().adapter(JsonBaseAddFriend::class.java)
+        val jsonData = adapter.toJson(JsonBaseAddFriend(userId, friendUserId))
+        val header = hashMapOf("Content-Type" to "application/json")
+
+        // http post
+        val serverAddress = ConfigurationDataClass().serverAddress
+        val (request, response, result) =
+                Fuel.post("$serverAddress/add_friends").header(header).body(jsonData).response()
+
+        val (data, error) = result
+
+        // 通信結果を返す
+        if(error == null){
+            return String(response.data)
+        }else{
+            return null
+        }
+    }
+
     // データクラス
     data class JsonBase(val user_id: String)
+    data class JsonBaseAddFriend(val user_id: String, val add_friends_user_id: String)
 }
