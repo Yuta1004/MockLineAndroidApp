@@ -6,24 +6,62 @@
     android:layout_height="match_parent"
     tools:context=".Activities.SignSelectActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
-        <Button
-            android:id="@+id/select_login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/register_button_text" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_above="@+id/select_button_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="200dp"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
-        <Button
-            android:id="@+id/select_register_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/select_button_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/login_button_text" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <Button
+                    android:id="@+id/select_login_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:text="@string/register_button_text" />
+
+                <Button
+                    android:id="@+id/select_register_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:text="@string/login_button_text" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
