@@ -1,5 +1,6 @@
 package work.nityc_nyuta.mockline.Activities
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -12,10 +13,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_talk.*
@@ -159,11 +162,44 @@ class TalkActivity : AppCompatActivity() {
     }
 
     // オプションメニューがクリックされたら
+    @SuppressLint("InflateParams")
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
             R.id.invite_talkroom ->{
+                // カスタムビュー
                 val adapter = SelectFriendsListAdapter(layoutInflater)
+                val layout = layoutInflater.inflate(R.layout.invite_talkroom_dialog, null)
+                layout.findViewById<ListView>(R.id.friends_select_list).adapter = adapter
 
+                // AlertDialog
+                val alertBuilder = AlertDialog.Builder(this)
+                alertBuilder.setTitle("ユーザ招待")
+                alertBuilder.setMessage("招待するユーザを選択してください")
+                alertBuilder.setView(layout)
+
+                // 招待する
+                alertBuilder.setPositiveButton("OK"){ _, _ ->
+                    // 選択されたユーザ一覧を取得してサーバ通信
+                    val userList = adapter.getSelectUserIDList()
+
+                    val handler = Handler()
+                    thread{
+                        val result = ServerConnectTalkroomData().inviteTalkroom(talkroomId, userList)
+
+                        // 通信失敗ならToast表示
+                        handler.post {
+                            if (!result) {
+                                Toast.makeText(this, "招待に失敗しました", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+
+                // キャンセル(何もしない)
+                alertBuilder.setNegativeButton("CANCEL"){ _, _ -> }
+
+                // 表示
+                alertBuilder.show()
             }
 
             R.id.exit_talkroom -> {
