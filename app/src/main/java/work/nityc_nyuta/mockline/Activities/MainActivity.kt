@@ -119,6 +119,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         Log.d("OptionmenuSelect", "item")
         when(item!!.itemId){
+            R.id.add_friends ->{
+                val addFriendActivity = Intent(this, AddFriendActivity::class.java)
+                startActivity(addFriendActivity)
+            }
+
             // トークルーム作成
             R.id.make_talkroom -> {
                 val makeTalkroomActivity = Intent(this, MakeTalkroomActivity::class.java)
