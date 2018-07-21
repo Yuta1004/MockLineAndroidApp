@@ -20,6 +20,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_talk.*
 import kotlinx.android.synthetic.main.talk_holder_me.*
+import work.nityc_nyuta.mockline.Adapters.FriendsViewListAdapter
+import work.nityc_nyuta.mockline.Adapters.SelectFriendsListAdapter
 import work.nityc_nyuta.mockline.Adapters.TalkData
 import work.nityc_nyuta.mockline.Adapters.TalkRecycleViewAdapter
 import work.nityc_nyuta.mockline.Database.TalkroomDatabaseHelper
@@ -160,40 +162,43 @@ class TalkActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
             R.id.invite_talkroom ->{
-                Toast.makeText(this, "トークルーム招待", Toast.LENGTH_SHORT).show()
+                val adapter = SelectFriendsListAdapter(layoutInflater)
+
             }
 
             R.id.exit_talkroom -> {
-                // 退出確認のダイアログを出す
-                AlertDialog.Builder(this)
-                        .setTitle("退出確認")
-                        .setMessage("本当に退出してもよろしいですか？")
+                // 退出確認のダイアログ生成
+                val alertBuilder = AlertDialog.Builder(this)
+                alertBuilder.setTitle("退出確認")
+                alertBuilder.setMessage("本当に退出してもよろしいですか？")
 
-                        // 退出する
-                        .setPositiveButton("OK"){ _, _ ->
-                            val handler = Handler()
-                            thread {
-                                // サーバ通信
-                                val result = ServerConnectTalkroomData().exitTalkroom(talkroomId)
+                // 退出するボタンのリスナ
+                alertBuilder.setPositiveButton("OK"){ _, _ ->
+                    val handler = Handler()
+                    thread {
+                        // サーバ通信
+                        val result = ServerConnectTalkroomData().exitTalkroom(talkroomId)
 
-                                // UI操作をするためハンドラを使う
-                                handler.post {
-                                    if (result) {
-                                        Toast.makeText(this, "${title}を退出しました", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        Toast.makeText(this, "退出に失敗しました", Toast.LENGTH_SHORT).show()
-                                    }
-
-                                    // adapterをnullにしてTalkroomListの更新をかける
-                                    TalkroomViewFragment.talkroomListAdapter = null
-                                    finish()
-                                }
+                        // UI操作をするためハンドラを使う
+                        handler.post {
+                            if (result) {
+                                Toast.makeText(this, "${title}を退出しました", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this, "退出に失敗しました", Toast.LENGTH_SHORT).show()
                             }
-                        }
 
-                        // 退出しない(何もしない)
-                        .setNegativeButton("CANCEL"){ _, _ -> }
-                        .show()
+                            // adapterをnullにしてTalkroomListの更新をかける
+                            TalkroomViewFragment.talkroomListAdapter = null
+                            finish()
+                        }
+                    }
+                }
+
+                // 退出しない(何もしない)
+                alertBuilder.setNegativeButton("CANCEL"){ _, _ -> }
+
+                // 表示
+                alertBuilder.show()
             }
         }
 
