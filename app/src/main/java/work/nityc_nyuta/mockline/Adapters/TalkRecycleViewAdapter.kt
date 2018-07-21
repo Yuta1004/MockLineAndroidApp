@@ -34,6 +34,11 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
                 return ChatViewHolderMe(rowView)
             }
 
+            2 ->{ // トークルームについての情報用ViewHolder
+                val rowView = LayoutInflater.from(parent.context).inflate(R.layout.talk_holder_information, parent, false)
+                return ChatViewHolderInformation(rowView)
+            }
+
             else ->{
                 val rowView = LayoutInflater.from(parent.context).inflate(R.layout.talk_holder_opponent, parent, false)
                 return ChatViewHolderOpponent(rowView)
@@ -63,6 +68,11 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
                 holder.bodyView.text = talkList[position].body
                 holder.timeView.text = timestampToDate(talkList[position].time)
             }
+
+            2 -> { // トークルームについての情報メッセージ
+                val holder = holder_args as ChatViewHolderInformation
+                holder.bodyView.text = talkList[position].body
+            }
         }
     }
 
@@ -77,10 +87,12 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
         }
 
         // ViewTypeを返す
-        return if(talkList[position].senderId != meId){
-            0
+        if(talkList[position].senderId == meId){
+            return 1
+        }else if(talkList[position].senderId == "owner"){
+            return 2
         }else{
-            1
+            return 0
         }
     }
     
@@ -136,6 +148,11 @@ class TalkRecycleViewAdapter(talkList_args: MutableList<TalkData>): RecyclerView
     private class ChatViewHolderMe(itemView: View): RecyclerView.ViewHolder(itemView){
         val bodyView = itemView.findViewById<TextView>(R.id.body)!!
         val timeView = itemView.findViewById<TextView>(R.id.time)!!
+    }
+
+    // トークルームについての情報用ViewHolder
+    private class ChatViewHolderInformation(itemView: View): RecyclerView.ViewHolder(itemView){
+        val bodyView = itemView.findViewById<TextView>(R.id.body)!!
     }
 }
 
