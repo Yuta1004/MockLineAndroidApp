@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/make_talkroom"
+        android:id="@+id/add_friends"
         android:orderInCategory="1"
-        android:icon="@drawable/ic_group_add_white_24dp"
-        android:title="@string/talkroom_add_text"
+        android:icon="@drawable/ic_person_add_white_24dp"
+        android:title="@string/add_friends_text"
         app:showAsAction="always"/>
 
 </menu>

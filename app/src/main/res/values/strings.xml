@@ -15,4 +15,5 @@
     <string name="notify_channel_name">新規トーク通知</string>
     <string name="exit_talkroom_text">トークルーム退出</string>
     <string name="invite_talkroom_text">ユーザ招待</string>
+    <string name="add_friends_text">友達追加</string>
 </resources>

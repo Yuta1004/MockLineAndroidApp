@@ -45,6 +45,16 @@ class FriendsViewFragment : Fragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater!!.inflate(R.menu.friendsview_fragment_option_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     private fun setFriendsListViewAdapter(){
         // スレッド終了監視フラグ
         var connectEnd = false
