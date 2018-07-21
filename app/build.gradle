@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.github.kittinunf.fuel:fuel-android:1.9.0'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'io.realm:android-adapters:2.1.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
