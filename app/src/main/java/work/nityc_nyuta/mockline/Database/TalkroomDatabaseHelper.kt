@@ -4,6 +4,7 @@ import android.content.Context
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.internal.Table
+import work.nityc_nyuta.mockline.Adapters.Talkroom
 
 class TalkroomDatabaseHelper(context: Context){
     private var realmInstance: Realm? = null
@@ -33,6 +34,18 @@ class TalkroomDatabaseHelper(context: Context){
             }
 
             realmInstance!!.copyToRealm(talkroom)
+        }
+    }
+
+    fun removeTalkroom(talkroomId: String){
+        // トランザクション
+        realmInstance!!.executeTransaction {
+            val talkroom = realmInstance!!.where(TalkroomTable::class.java)
+                    .equalTo("talkroomId", talkroomId)
+                    .findAll()
+
+            // トークルーム削除
+            if(talkroom.size != 0){ talkroom.deleteAllFromRealm() }
         }
     }
 
