@@ -1,11 +1,10 @@
 package work.nityc_nyuta.mockline.ServerConncection
 
-import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.squareup.moshi.Moshi
 import org.json.JSONObject
-import work.nityc_nyuta.mockline.ConfigurationDataClass
 
 class ServerConnectFriendsData {
     fun getFriendsList(): List<String>? {
@@ -22,7 +21,7 @@ class ServerConnectFriendsData {
         val header = hashMapOf("Content-type" to "application/json")
 
         // http post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/get_friends_list").header(header).body(jsonData).response()
 
@@ -53,7 +52,7 @@ class ServerConnectFriendsData {
         val header = hashMapOf("Content-Type" to "application/json")
 
         // http post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/add_friends").header(header).body(jsonData).response()
 

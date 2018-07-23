@@ -3,11 +3,9 @@ package work.nityc_nyuta.mockline.ServerConncection
 import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.google.firebase.auth.FirebaseAuth
-import com.squareup.moshi.JsonAdapter
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.squareup.moshi.Moshi
-import org.json.JSONArray
 import org.json.JSONObject
-import work.nityc_nyuta.mockline.ConfigurationDataClass
 
 class ServerConnectUserData{
     fun sendUserData(name: String?, notifyToken: String?, iconUrl: String?, headerImageUrl: String?, path: String){
@@ -20,7 +18,7 @@ class ServerConnectUserData{
             val header = hashMapOf("Content-Type" to "application/json")
 
             // http Post
-            val serverAddress = ConfigurationDataClass().serverAddress
+            val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
             Log.d("Json", jsonData)
             Fuel.post("$serverAddress/$path").header(header).body(jsonData).responseString()
         }
@@ -41,7 +39,7 @@ class ServerConnectUserData{
         val header = hashMapOf("Content-Type" to "application/json")
 
         // http post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/get_user_data").header(header).body(jsonData).response()
 

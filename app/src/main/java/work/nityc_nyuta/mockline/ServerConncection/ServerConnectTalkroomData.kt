@@ -4,9 +4,9 @@ import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.squareup.moshi.Moshi
 import org.json.JSONObject
-import work.nityc_nyuta.mockline.ConfigurationDataClass
 
 class ServerConnectTalkroomData{
     fun getJoinTalkrooms(): JSONObject?{
@@ -19,7 +19,7 @@ class ServerConnectTalkroomData{
             val header = hashMapOf("Content-Type" to "application/json")
 
             // 通信
-            val serverAddress = ConfigurationDataClass().serverAddress
+            val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
             val (request, response, result) =
                     Fuel.post("$serverAddress/get_join_talkrooms").header(header).body(jsonData).responseJson()
 
@@ -46,7 +46,7 @@ class ServerConnectTalkroomData{
         val header = hashMapOf("Content-Type" to "applicaton/json")
 
         // http post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/get_talkroom_data").header(header).body(jsonData).response()
 
@@ -66,7 +66,7 @@ class ServerConnectTalkroomData{
         val header = hashMapOf("Content-Type" to "application/json")
 
         // http post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/make_talkroom").header(header).body(jsonData).response()
     }
@@ -80,7 +80,7 @@ class ServerConnectTalkroomData{
         val header = hashMapOf("Content-Type" to "application/json")
 
         // http_post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/exit_talkroom").header(header).body(jsonData).response()
 
@@ -96,7 +96,7 @@ class ServerConnectTalkroomData{
         val header = hashMapOf("Content-Type" to "application/json")
 
         // http_post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/join_talkroom").header(header).body(jsonData).response()
 

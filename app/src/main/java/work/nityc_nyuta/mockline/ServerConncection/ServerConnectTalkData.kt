@@ -2,8 +2,8 @@ package work.nityc_nyuta.mockline.ServerConncection
 
 import com.github.kittinunf.fuel.Fuel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.squareup.moshi.Moshi
-import work.nityc_nyuta.mockline.ConfigurationDataClass
 
 class ServerConnectTalkData(){
     fun sendTalkData(talkroomId: String, message: String, timestamp: Long): Boolean{
@@ -15,7 +15,7 @@ class ServerConnectTalkData(){
         val header = hashMapOf("Content-Type" to "application/json")
 
         // http post
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         val (request, response, result) =
                 Fuel.post("$serverAddress/send_message").header(header).body(jsonData).response()
 

@@ -16,15 +16,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.github.kittinunf.fuel.Fuel
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import work.nityc_nyuta.mockline.ConfigurationDataClass
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.Adapters.SelectTabsAdapter
 import work.nityc_nyuta.mockline.BuildConfig
@@ -103,7 +100,7 @@ class MainActivity : AppCompatActivity() {
 
         // サーバ接続チェック
         val handler = Handler()
-        val serverAddress = ConfigurationDataClass().serverAddress
+        val serverAddress = FirebaseRemoteConfig.getInstance().getString("ServerAddress")
         thread {
             val (request, response, result) =
                     Fuel.get("$serverAddress/check_server").responseString()
