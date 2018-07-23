@@ -5,6 +5,8 @@ import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.TextInputEditText
+import android.support.design.widget.TextInputLayout
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.Button
@@ -17,6 +19,7 @@ import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.talk_holder_me.*
 import org.json.JSONObject
+import org.w3c.dom.Text
 import work.nityc_nyuta.mockline.Fragments.FriendsViewFragment
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectFriendsData
@@ -28,6 +31,8 @@ class AddFriendActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_friend)
+
+        title = "友達追加"
 
         // QRコードの内容
         val userId = FirebaseAuth.getInstance().currentUser!!.email!!
@@ -41,6 +46,23 @@ class AddFriendActivity : AppCompatActivity() {
         findViewById<Button>(R.id.start_qr_reader).setOnClickListener {
             val qrReadActivity = Intent(this, QRReadActivity::class.java)
             startActivityForResult(qrReadActivity, 0)
+        }
+
+        // 友達追加(ID)ボタンが押されたら
+        findViewById<Button>(R.id.add_friend_button).setOnClickListener {
+            //　入力されたIDを取得
+            val inputLayout = findViewById<TextInputLayout>(R.id.friend_id_inp_layout)
+            val inputForm = findViewById<TextInputEditText>(R.id.friend_id_inp)
+            val inpText = inputForm.text.toString()
+            inputForm.setText("")
+
+            // 入力欄が空でなければ処理を行う
+            if(inpText != "") {
+                inputLayout.isErrorEnabled = false
+                addFriendProcess(inpText)
+            }else{
+                inputLayout.error = "IDが入力されていません"
+            }
         }
     }
 
