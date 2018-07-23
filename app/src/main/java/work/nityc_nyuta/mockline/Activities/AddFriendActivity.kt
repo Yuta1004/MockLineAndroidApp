@@ -33,66 +33,10 @@ class AddFriendActivity : AppCompatActivity() {
         // QRを読み取らなかった場合
         if(data == null || !data.hasExtra("Result")){ return }
 
-        // QR読み取り結果がnullでない = 正しいものなら
+        // QR読み取り結果がnullでない = 正しいものなら友達登録処理
         val readQRResult = readQRResult(data!!.getStringExtra("Result"))
-        Log.d("Result", readQRResult.toString())
         if(readQRResult != null){
-            // スレッド終了確認監視フラグ
-            var connectFlag = false
-            var userInfo: JSONObject? = null
-            thread {
-                userInfo = ServerConnectUserData().getUserData(listOf(readQRResult))
-                connectFlag = true
-            }
-            while(!connectFlag){ Thread.sleep(100) }
-
-            if(!userInfo!!.has(readQRResult)){
-                Toast.makeText(this, "存在しないユーザです", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            // カスタムビュー
-            val layout = layoutInflater.inflate(R.layout.friends_list_item, null)
-            layout.findViewById<TextView>(R.id.name).text = userInfo!!.getJSONObject(readQRResult).getString("name")
-
-            // AlertDialog
-            val alertDialogBuilder = AlertDialog.Builder(this)
-            alertDialogBuilder.setTitle("追加確認")
-            alertDialogBuilder.setMessage("このユーザを友達追加しますか？")
-            alertDialogBuilder.setView(layout)
-
-            // 追加するを選択したら
-            alertDialogBuilder.setPositiveButton("追加する") { _, _ ->
-                // スレッド終了監視フラグ
-                connectFlag = false
-                var friendAddResult: String? = null
-                thread {
-                    friendAddResult = ServerConnectFriendsData().addFriend(readQRResult)
-                    connectFlag = true
-                }
-                while(!connectFlag){ Thread.sleep(100) }
-
-                // 通信成功
-                if(friendAddResult != null){
-                    when(friendAddResult) {
-                        "Success" -> {
-                            Toast.makeText(this, "友達追加に成功しました", Toast.LENGTH_SHORT).show()
-                            FriendsViewFragment.friendListAdapter = null
-                        }
-
-                        "Already Added User" -> {
-                            Toast.makeText(this, "すでに友達になっているユーザです", Toast.LENGTH_SHORT).show()
-                        }
-
-                        "Userid is same" -> {
-                            Toast.makeText(this, "自分自身を友達追加することはできません", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
-            alertDialogBuilder.setNegativeButton("追加しない"){ _, _ -> }
-
-            alertDialogBuilder.show()
+            addFriendProcess(readQRResult)
         }else{
             Toast.makeText(this, "不正なQRコードです", Toast.LENGTH_SHORT).show()
         }
@@ -117,5 +61,65 @@ class AddFriendActivity : AppCompatActivity() {
         }else{
             return null
         }
+    }
+
+    // 与えられたIDを友達として追加する
+    private fun addFriendProcess(friendId: String){
+        // スレッド終了確認監視フラグ
+        var connectFlag = false
+        var userInfo: JSONObject? = null
+        thread {
+            userInfo = ServerConnectUserData().getUserData(listOf(friendId))
+            connectFlag = true
+        }
+        while(!connectFlag){ Thread.sleep(100) }
+
+        if(!userInfo!!.has(friendId)){
+            Toast.makeText(this, "存在しないユーザです", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // カスタムビュー
+        val layout = layoutInflater.inflate(R.layout.friends_list_item, null)
+        layout.findViewById<TextView>(R.id.name).text = userInfo!!.getJSONObject(friendId).getString("name")
+
+        // AlertDialog
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("追加確認")
+        alertDialogBuilder.setMessage("このユーザを友達追加しますか？")
+        alertDialogBuilder.setView(layout)
+
+        // 追加するを選択したら
+        alertDialogBuilder.setPositiveButton("追加する") { _, _ ->
+            // スレッド終了監視フラグ
+            connectFlag = false
+            var friendAddResult: String? = null
+            thread {
+                friendAddResult = ServerConnectFriendsData().addFriend(friendId)
+                connectFlag = true
+            }
+            while(!connectFlag){ Thread.sleep(100) }
+
+            // 通信成功
+            if(friendAddResult != null){
+                when(friendAddResult) {
+                    "Success" -> {
+                        Toast.makeText(this, "友達追加に成功しました", Toast.LENGTH_SHORT).show()
+                        FriendsViewFragment.friendListAdapter = null
+                    }
+
+                    "Already Added User" -> {
+                        Toast.makeText(this, "すでに友達になっているユーザです", Toast.LENGTH_SHORT).show()
+                    }
+
+                    "Userid is same" -> {
+                        Toast.makeText(this, "自分自身を友達追加することはできません", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        alertDialogBuilder.setNegativeButton("追加しない"){ _, _ -> }
+
+        alertDialogBuilder.show()
     }
 }
