@@ -54,8 +54,14 @@
         <activity
             android:name=".Activities.MakeTalkroomActivity"
             android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />
-        <activity android:name=".Activities.QRReadActivity" />
-        <activity android:name=".Activities.AddFriendActivity"></activity>
+
+        <activity
+            android:name=".Activities.QRReadActivity"
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden"/>
+
+        <activity
+            android:name=".Activities.AddFriendActivity"
+            android:windowSoftInputMode="stateVisible|stateAlwaysHidden"/>
     </application>
 
 </manifest>

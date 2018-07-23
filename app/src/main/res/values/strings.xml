@@ -19,5 +19,5 @@
     <string name="add_friend_from_id">IDを使用する</string>
     <string name="add_friend_from_qr">QRコードを使用する</string>
     <string name="start_qr_reader_text">QRコードリーダー起動</string>
-    <string name="my_qr">自分のQRコード</string>
+    <string name="my_qr">自分のQRコード (有効期間: QRコード生成から10分)</string>
 </resources>
