@@ -1,13 +1,20 @@
 package work.nityc_nyuta.mockline.Activities
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.talk_holder_me.*
 import org.json.JSONObject
 import work.nityc_nyuta.mockline.Fragments.FriendsViewFragment
@@ -22,8 +29,19 @@ class AddFriendActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_friend)
 
-        val qrReadActivity = Intent(this, QRReadActivity::class.java)
-        startActivityForResult(qrReadActivity, 0)
+        // QRコードの内容
+        val userId = FirebaseAuth.getInstance().currentUser!!.email!!
+        val timestamp = System.currentTimeMillis().toString()
+        val qrContent = "$userId:$timestamp"
+
+        // QRコードを生成してImageviewにセット
+        findViewById<ImageView>(R.id.my_qr_view).setImageBitmap(createQRBitmap(qrContent))
+
+        // QRリーダー起動ボタンが押された時にリーダを起動する
+        findViewById<Button>(R.id.start_qr_reader).setOnClickListener {
+            val qrReadActivity = Intent(this, QRReadActivity::class.java)
+            startActivityForResult(qrReadActivity, 0)
+        }
     }
 
     // QR読み取り結果を受け取る
@@ -39,6 +57,17 @@ class AddFriendActivity : AppCompatActivity() {
             addFriendProcess(readQRResult)
         }else{
             Toast.makeText(this, "不正なQRコードです", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun createQRBitmap(content: String): Bitmap? {
+        try {
+            // QRコード生成
+            val encoder = BarcodeEncoder()
+            return encoder.encodeBitmap(content, BarcodeFormat.QR_CODE, 250, 250)
+        }catch (e: WriterException){
+            // エラーが起きたらnull
+            return null
         }
     }
 
