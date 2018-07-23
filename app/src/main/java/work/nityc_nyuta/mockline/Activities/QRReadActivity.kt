@@ -19,9 +19,11 @@ class QRReadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_read)
 
+        title = "QRコードリーダー"
+
         // QR読み取り開始
         qrReader = findViewById<DecoratedBarcodeView>(R.id.qr_reader)
-        qrReader!!.setStatusText("QRをかざしてください")
+        qrReader!!.setStatusText("QRを画面に合わせてください")
 
         // 読み取り結果がnullでなければIntentを返す
         qrReader!!.decodeSingle(object: BarcodeCallback{
