@@ -56,7 +56,7 @@ class AddFriendActivity : AppCompatActivity() {
         val nowTimestamp = System.currentTimeMillis()
 
         // 使用期限チェック(発行されて1日以内のものか)
-        if(nowTimestamp <= timestamp && timestamp < nowTimestamp+86500000){
+        if(timestamp <= nowTimestamp && nowTimestamp <= timestamp+85400000){
             return userId
         }else{
             return null
