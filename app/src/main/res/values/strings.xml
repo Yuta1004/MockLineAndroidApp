@@ -16,4 +16,8 @@
     <string name="exit_talkroom_text">トークルーム退出</string>
     <string name="invite_talkroom_text">ユーザ招待</string>
     <string name="add_friends_text">友達追加</string>
+    <string name="add_friend_from_id">IDを使用する</string>
+    <string name="add_friend_from_qr">QRコードを使用する</string>
+    <string name="start_qr_reader_text">QRコードリーダー起動</string>
+    <string name="my_qr">自分のQRコード</string>
 </resources>
