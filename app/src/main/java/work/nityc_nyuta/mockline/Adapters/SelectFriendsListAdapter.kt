@@ -1,6 +1,7 @@
 package work.nityc_nyuta.mockline.Adapters
 
 import android.annotation.SuppressLint
+import android.support.constraint.solver.widgets.ChainHead
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -62,9 +63,11 @@ class SelectFriendsListAdapter(layoutInflater_args: LayoutInflater): BaseAdapter
         myConvertView.findViewById<TextView>(R.id.name).text = friendsList[position].name
 
         // チェックボックスが押されるたびにFriendクラスのcheckBoxStatusを変更
-        myConvertView.findViewById<CheckBox>(R.id.select_friend).setOnClickListener {
-            friendsList[position].checkBoxStatus = !friendsList[position].checkBoxStatus
+        val checkBoxView = myConvertView.findViewById<CheckBox>(R.id.select_friend)
+        checkBoxView.setOnCheckedChangeListener { buttonView, isChecked ->
+            friendsList[position].checkBoxStatus = isChecked
         }
+        checkBoxView.isChecked = friendsList[position].checkBoxStatus
 
         return myConvertView
     }
