@@ -37,29 +37,7 @@
                 <action android:name="UpdateTalkroomListView" />
             </intent-filter>
         </service>
-
-        <!-- トークン生成などの際に必要 -->
-        <!-- <service -->
-        <!-- android:name=".MyFirebaseInstanceIDService"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/> -->
-        <!-- </intent-filter> -->
-        <!-- </service> -->
-
-
-        <!-- 通知の色設定 -->
-        <!-- <meta-data -->
-        <!-- android:name="com.google.firebase.messaging.default_notification_icon" -->
-        <!-- android:resource="@drawable/ic_stat_ic_notification" /> -->
-        <!-- <meta-data -->
-        <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
-        <!-- android:resource="@color/colorAccent" /> -->
-
-
-        <!-- 通知チャンネルの設定(タグみたいなもの) -->
-        <!-- <meta-data -->
-        <!-- android:name="com.google.firebase.messaging.default_notification_channel_id" -->
-        <!-- android:value="@string/default_notification_channel_id"/> -->
+        
         <activity
             android:name=".Activities.SignSelectActivity"
             android:windowSoftInputMode="stateVisible|stateAlwaysHidden" />

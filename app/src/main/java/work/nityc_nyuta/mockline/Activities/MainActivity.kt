@@ -117,9 +117,6 @@ class MainActivity : AppCompatActivity() {
             val signSelectActivity = Intent(this, SignSelectActivity::class.java)
             startActivity(signSelectActivity)
         }
-
-        val chatActivity = Intent(this, TalkActivity::class.java)
-//        startActivity(chatActivity)
     }
 
     override fun onResume() {
