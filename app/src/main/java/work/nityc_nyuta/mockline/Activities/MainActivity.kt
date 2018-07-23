@@ -16,23 +16,53 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.github.kittinunf.fuel.Fuel
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import work.nityc_nyuta.mockline.ConfigurationDataClass
 import work.nityc_nyuta.mockline.R
 import work.nityc_nyuta.mockline.Adapters.SelectTabsAdapter
+import work.nityc_nyuta.mockline.BuildConfig
 import work.nityc_nyuta.mockline.ServerConncection.ServerConnectUserData
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private var firebaseRemoteConfig: FirebaseRemoteConfig? = null
     private val myActivityLifeCycleCallbacks = MyActivityLifeCycleCallbacks()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // FirebaseRemoteConfigの設定
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        val coreSettings = FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build()
+        firebaseRemoteConfig!!.setConfigSettings(coreSettings)
+        firebaseRemoteConfig!!.setDefaults(R.xml.firebase_remote_config_value)
+
+        // 更新間隔(開発者モードの時は起動時毎回Fetch)
+        var cacheExpression = 3600L
+        if(firebaseRemoteConfig!!.info.configSettings.isDeveloperModeEnabled){
+            cacheExpression = 0L
+        }
+
+        // Fetch
+        firebaseRemoteConfig!!.fetch(cacheExpression)
+                .addOnCompleteListener(this){ task ->
+                    if(task.isSuccessful){
+                        firebaseRemoteConfig!!.activateFetched()
+                    }else{
+                        Toast.makeText(this, "Firebaseサービスに接続できませんでした", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
         // Activityのライフサイクルを監視する
         application.registerActivityLifecycleCallbacks(myActivityLifeCycleCallbacks)

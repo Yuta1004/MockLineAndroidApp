@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>ServerAddress</key>
+        <value>http://localhost:1204</value>
+    </entry>
+</defaultsMap>
